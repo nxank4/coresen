@@ -15,7 +15,7 @@ export function YouTubeComponent(props: any) {
         href={youtubeUrl || "#"}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-neutral-700 dark:text-neutral-300 hover:underline inline-flex items-center gap-2"
+        className="link-animated text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 inline-flex items-center gap-2"
       >
         <svg
           className="w-5 h-5"
