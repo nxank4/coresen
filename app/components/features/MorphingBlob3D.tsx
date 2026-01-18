@@ -18,7 +18,6 @@ function BlobScene({ reducedMotion }: { reducedMotion: boolean }) {
   const { resolvedTheme } = useTheme();
   const { gl } = useThree();
   
-  // Minimal low poly: 4 segments for simplest geometry
   const segments = 4;
   const isDark = resolvedTheme === "dark";
 
@@ -27,9 +26,7 @@ function BlobScene({ reducedMotion }: { reducedMotion: boolean }) {
     timeRef.current += delta;
   });
 
-  // Material color based on theme
   const lineColor = isDark ? "#ffffff" : "#000000";
-  const glowColor = isDark ? "#e5e5e5" : "#404040";
 
   return (
     <>
@@ -74,7 +71,6 @@ export function MorphingBlob3D({
   useEffect(() => {
     setMounted(true);
     
-    // Check for WebGL support
     try {
       const canvas = document.createElement("canvas");
       const gl = canvas.getContext("webgl") || canvas.getContext("webgl2");
@@ -87,17 +83,14 @@ export function MorphingBlob3D({
       return;
     }
     
-    // Check for reduced motion preference
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReducedMotion(mediaQuery.matches);
     
     const handleChange = () => setReducedMotion(mediaQuery.matches);
     mediaQuery.addEventListener("change", handleChange);
     
-    // Set visible immediately, then use Intersection Observer for performance
     setIsVisible(true);
     
-    // Intersection Observer for performance (pause when not visible)
     if (containerRef.current) {
       const observer = new IntersectionObserver(
         ([entry]) => {
@@ -119,7 +112,6 @@ export function MorphingBlob3D({
   }
 
   if (hasError) {
-    // Fallback: simple gradient circle
     return (
       <div
         ref={containerRef}
