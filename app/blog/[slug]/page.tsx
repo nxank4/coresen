@@ -4,6 +4,7 @@ import { CustomMDX } from "app/components/ui/mdx";
 import { getBlogPosts } from "app/lib/posts";
 import { formatDate } from "app/lib/utils";
 import { metaData } from "app/config";
+import { BlogPostHeader } from "./BlogPostHeader";
 
 export async function generateStaticParams() {
   let posts = getBlogPosts();
@@ -86,14 +87,7 @@ export default async function Blog(props) {
           }),
         }}
       />
-      <h1 className="title mb-3 font-medium text-2xl tracking-tight text-neutral-900 dark:text-neutral-100">
-        {post.metadata.title}
-      </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-medium">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
-        </p>
-      </div>
+      <BlogPostHeader title={post.metadata.title} publishedAt={post.metadata.publishedAt} />
       <article className="prose prose-quoteless prose-neutral dark:prose-invert">
         <CustomMDX source={post.content} />
       </article>

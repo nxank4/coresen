@@ -2,6 +2,7 @@ import "./global.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { JetBrains_Mono } from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 import { Navbar } from "./components/layout/nav";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -9,6 +10,7 @@ import Footer from "./components/layout/footer";
 import { ThemeProvider } from "./components/ui/theme-switch";
 import AntdRegistry from "./lib/AntdRegistry";
 import { AntdConfigProvider } from "./components/ui/AntdConfigProvider";
+import { NavigationLoading } from "./components/ui/NavigationLoading";
 import { metaData } from "./config";
 
 export const metadata: Metadata = {
@@ -62,6 +64,13 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  weight: ["400", "600", "700"],
+});
+
 const cx = (...classes) => classes.filter(Boolean).join(" ");
 
 export default function RootLayout({
@@ -70,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cx(inter.variable, jetbrainsMono.variable)} suppressHydrationWarning>
+    <html lang="en" className={cx(inter.variable, jetbrainsMono.variable, playfairDisplay.variable)} suppressHydrationWarning>
       <head>
         <link
           rel="alternate"
@@ -100,6 +109,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <AntdConfigProvider>
+              <NavigationLoading />
               <main className="flex-auto min-w-0 mt-2 md:mt-6 flex flex-col px-4 sm:px-6 md:px-8 lg:px-12 w-full max-w-screen-sm sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl xl:max-w-7xl mx-auto">
                 <Navbar />
                 {children}

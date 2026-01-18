@@ -10,6 +10,7 @@ import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import "katex/dist/katex.min.css";
 
+
 function CustomLink(props) {
   let href = props.href;
   if (href.startsWith("/")) {
@@ -84,7 +85,7 @@ function createHeading(level) {
     let slug = slugify(children);
     return React.createElement(
       `h${level}`,
-      { id: slug },
+      { id: slug, className: "text-neutral-900 dark:text-neutral-100" },
       [
         React.createElement("a", {
           href: `#${slug}`,
