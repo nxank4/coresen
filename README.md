@@ -1,93 +1,64 @@
-# Nguyen Xuan An - Data Scientist & Machine Learning Engineer
+# CoreSen
 
-**Address:**  
-Vinhomes Grand Park, Nguyen Xien Street, Thu Duc City, Ho Chi Minh City, Vietnam 70000  
+A modern blog, AI guide, portfolio, and knowledge base built with Next.js, featuring low poly 3D morphing animations and a monochrome design system.
 
-**Email:** [nxan2911@gmail.com](mailto:nxan2911@gmail.com)  
-**Phone:** (+84) 034.529.2911  
-**GitHub:** [https://github.com/lunovian](https://github.com/lunovian)  
+## 🌟 Features
 
----
+- **Blog**: In-depth articles on AI, data science, and machine learning
+- **AI Guide**: Comprehensive guides and tutorials for AI practitioners
+- **Portfolio**: Showcase of projects and work
+- **Knowledge Base**: Curated resources and insights
 
-## 📚 Education
+## 🛠️ Tech Stack
 
-**FPT University – Thu Duc City, Ho Chi Minh City**  
-*Bachelor of Artificial Intelligence*  
+- **Framework**: Next.js 16.1.3 (App Router)
+- **Styling**: Tailwind CSS with custom monochrome theme
+- **UI Components**: Ant Design
+- **3D Graphics**: Three.js, React Three Fiber
+- **Content**: MDX with syntax highlighting
+- **Typography**: Inter (body) + JetBrains Mono (headings/code)
+- **Deployment**: Vercel
 
-- GPA: 3.36/4 | Expected Graduation: 2026  
-- Academic Highlights: 1 Semester of Excellent Performance, 5 Semesters of Good Academic Performance  
-- Relevant Coursework: Advanced Machine Learning, Deep Learning, Probability and Statistics, Big Data, AI Ethics, and Cloud Computing for AI Applications.  
+## 🎨 Design
 
----
+- **Theme**: Monochrome (black/white) with seamless dark/light mode
+- **3D Animation**: Low poly wireframe morphing blob (Platonic solids)
+- **Style**: Minimalist, professional, code-focused aesthetic
 
-## 💻 Technical Skills
+## 🚀 Getting Started
 
-- **Programming:** Python, TensorFlow, PyTorch, R, SQL, MATLAB, C++, JavaScript  
-- **Design Tools:** Figma, Adobe Photoshop, Adobe Premiere, Canva  
+```bash
+# Install dependencies
+pnpm install
 
----
+# Run development server
+pnpm dev
 
-## 🚀 Projects
+# Build for production
+pnpm build
 
-### **REColor**  
+# Start production server
+pnpm start
+```
 
-- AI-driven tool for recoloring grayscale and faded images.  
-- Enhanced visual quality with a user-friendly interface.  
+## 📁 Project Structure
 
-### **AI Tool for Room Decoration**  
+```
+app/
+├── components/
+│   ├── features/     # Feature components (3D blob, homepage, etc.)
+│   ├── layout/       # Layout components (nav, footer)
+│   └── ui/           # UI components (theme switch, MDX renderer)
+├── lib/              # Utilities and helpers
+├── blog/             # Blog posts (MDX)
+├── profile/          # Profile page
+└── [pages]/          # Other pages (projects, photos)
+```
 
-- Analyzed room layout and preferences to recommend furniture and design.  
-- Seamlessly integrated cutting-edge AI for optimized decor suggestions.  
+## 🌐 Live Site
 
-### **ANAug**  
+Visit [coresen.vercel.app](https://coresen.vercel.app)
 
-- Developed Python-based data augmentation libraries tailored for medical imaging and engineering.  
-- Improved model robustness and niche AI application performance.  
+## 📝 License
 
----
-
-## 🏢 Professional Experience
-
-### **CEH - AI Engineer Intern**  
-
-*Ho Chi Minh City, Vietnam (Sep 2024 - Present)*  
-
-- Enhanced container label detection accuracy by 10% with AI algorithms.  
-- Documented reproducible experiments and shared knowledge across teams.  
-
-### **LINEN1992 - Product Marketing Manager**  
-
-*Ho Chi Minh City, Vietnam (Jul 2024 - Present)*  
-
-- Boosted revenue by 15% with AI-driven strategies and market insights.  
-- Leveraged AI-powered forecasting to streamline product development.  
-
----
-
-## 🎓 Leadership & Content Creation
-
-### **FPT University Student Union - Event Coordinator**  
-
-*Ho Chi Minh City, Vietnam (Sep 2022 - Dec 2022)*  
-
-- Organized events attended by 500+ participants, managing budgets and logistics.  
-
-### **@anmatngu2911 (YouTube Channel)**  
-
-*Founder & Content Creator (Jan 2023 - Present)*  
-
-- Over 1.57 million views and 19,000+ subscribers.  
-- Produced engaging crime and mystery content, showcasing storytelling skills.  
-
-### **CoreSen (Blog)**  
-
-*Founder & Content Creator (2023 - Present)*  
-
-- Authored insightful articles on AI and data analytics.  
-- Promoted through SEO and established a strong online presence.  
-
----
-
-## 🌟 Interests
-
-Passionate about leveraging AI and data to solve real-world problems, enhancing human lives, and driving innovation.  
+MIT  
