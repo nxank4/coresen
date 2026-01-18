@@ -6,7 +6,6 @@ import { highlight } from "sugar-high";
 import { TweetComponent } from "../features/tweet";
 import { CaptionComponent } from "./caption";
 import { YouTubeComponent } from "../features/youtube";
-import { ImageGrid } from "../features/image-grid";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import "katex/dist/katex.min.css";
@@ -108,7 +107,6 @@ let components = {
   h5: createHeading(5),
   h6: createHeading(6),
   Image: RoundedImage,
-  ImageGrid,
   a: CustomLink,
   StaticTweet: TweetComponent,
   Caption: CaptionComponent,
