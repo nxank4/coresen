@@ -2,20 +2,24 @@
 
 import React from "react";
 import {
-  FaXTwitter,
   FaGithub,
   FaInstagram,
   FaRss,
   FaLinkedinIn,
+  FaKaggle,
 } from "react-icons/fa6";
 import { TbMailFilled } from "react-icons/tb";
-import { metaData, socialLinks } from "app/config";
+import { metaData, socialLinks } from "../../config";
+import { Layout, Space, Typography } from "antd";
+
+const { Footer: AntFooter } = Layout;
+const { Text, Link } = Typography;
 
 const YEAR = new Date().getFullYear();
 
 function SocialLink({ href, icon: Icon }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
+    <a href={href} target="_blank" rel="noopener noreferrer" style={{ fontSize: "1.2rem", color: "inherit" }}>
       <Icon />
     </a>
   );
@@ -23,40 +27,28 @@ function SocialLink({ href, icon: Icon }) {
 
 function SocialLinks() {
   return (
-    <div className="flex text-lg gap-3.5 float-right transition-opacity duration-300 hover:opacity-90">
-      <SocialLink href={socialLinks.twitter} icon={FaXTwitter} />
+    <Space size="middle">
       <SocialLink href={socialLinks.github} icon={FaGithub} />
       <SocialLink href={socialLinks.instagram} icon={FaInstagram} />
       <SocialLink href={socialLinks.linkedin} icon={FaLinkedinIn} />
+      <SocialLink href={socialLinks.kaggle} icon={FaKaggle} />
       <SocialLink href={socialLinks.email} icon={TbMailFilled} />
-      <a href="/rss.xml" target="_self">
+      <a href="/rss.xml" target="_self" style={{ fontSize: "1.2rem", color: "inherit" }}>
         <FaRss />
       </a>
-    </div>
+    </Space>
   );
 }
 
 export default function Footer() {
   return (
-    <small className="block lg:mt-24 mt-16 text-[#1C1C1C] dark:text-[#D4D4D4]">
-      <time>© {YEAR}</time>{" "}
-      <a
-        className="no-underline"
-        href={socialLinks.twitter}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {metaData.title}
-      </a>
-      <style jsx>{`
-        @media screen and (max-width: 480px) {
-          article {
-            padding-top: 2rem;
-            padding-bottom: 4rem;
-          }
-        }
-      `}</style>
-      <SocialLinks />
-    </small>
+    <AntFooter style={{ background: "transparent", textAlign: "center", padding: "24px 0" }}>
+      <Space orientation="vertical" size="small" style={{ width: "100%" }}>
+        <SocialLinks />
+        <Text type="secondary" className="text-neutral-600 dark:text-neutral-300">
+          © {YEAR} <Link href="/" className="text-inherit">{metaData.title}</Link>
+        </Text>
+      </Space>
+    </AntFooter>
   );
 }

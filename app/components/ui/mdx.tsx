@@ -3,10 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { highlight } from "sugar-high";
-import { TweetComponent } from "./tweet";
+import { TweetComponent } from "../features/tweet";
 import { CaptionComponent } from "./caption";
-import { YouTubeComponent } from "./youtube";
-import { ImageGrid } from "./image-grid";
+import { YouTubeComponent } from "../features/youtube";
+import { ImageGrid } from "../features/image-grid";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import "katex/dist/katex.min.css";
@@ -37,21 +37,21 @@ function Code({ children, ...props }) {
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
-    <th key={index}>{header}</th>
+    <th key={index} className="text-neutral-900 dark:text-neutral-100">{header}</th>
   ));
   let rows = data.rows.map((row, index) => (
     <tr key={index}>
       {row.map((cell, cellIndex) => (
-        <td key={cellIndex}>{cell}</td>
+        <td key={cellIndex} className="text-neutral-800 dark:text-neutral-200">{cell}</td>
       ))}
     </tr>
   ));
   return (
-    <table>
+    <table className="w-full border-collapse my-4">
       <thead>
-        <tr className="text-left">{headers}</tr>
+        <tr className="text-left border-b border-neutral-300 dark:border-neutral-700">{headers}</tr>
       </thead>
-      <tbody>{rows}</tbody>
+      <tbody className="border-b border-neutral-200 dark:border-neutral-800">{rows}</tbody>
     </table>
   );
 }

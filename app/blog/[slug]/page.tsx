@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts } from "app/lib/posts";
+import { CustomMDX } from "app/components/ui/mdx";
+import { getBlogPosts } from "app/lib/posts";
+import { formatDate } from "app/lib/utils";
 import { metaData } from "app/config";
 
 export async function generateStaticParams() {
@@ -12,9 +13,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({
-  params,
-}): Promise<Metadata | undefined> {
+export async function generateMetadata(props): Promise<Metadata | undefined> {
+  const params = await props.params;
   let post = getBlogPosts().find((post) => post.slug === params.slug);
   if (!post) {
     return;
@@ -54,7 +54,8 @@ export async function generateMetadata({
   };
 }
 
-export default function Blog({ params }) {
+export default async function Blog(props) {
+  const params = await props.params;
   let post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) {
@@ -85,7 +86,7 @@ export default function Blog({ params }) {
           }),
         }}
       />
-      <h1 className="title mb-3 font-medium text-2xl tracking-tight">
+      <h1 className="title mb-3 font-medium text-2xl tracking-tight text-neutral-900 dark:text-neutral-100">
         {post.metadata.title}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-medium">
