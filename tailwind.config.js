@@ -7,8 +7,10 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         mono: ["var(--font-jetbrains-mono)", "monospace"],
-        heading: ["var(--font-jetbrains-mono)", "monospace"],
+        heading: ["var(--font-playfair)", "serif"],
         body: ["var(--font-inter)", "system-ui", "sans-serif"],
+        button: ["var(--font-inter)", "system-ui", "sans-serif"],
+        subtitle: ["var(--font-playfair)", "serif"],
         code: ["var(--font-jetbrains-mono)", "monospace"],
       },
       typography: {
