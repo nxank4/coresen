@@ -2,14 +2,14 @@
 
 A modern blog, AI guide, portfolio, and knowledge base built with Next.js, featuring low poly 3D morphing animations and a monochrome design system.
 
-## 🌟 Features
+## Features
 
 - **Blog**: In-depth articles on AI, data science, and machine learning
 - **AI Guide**: Comprehensive guides and tutorials for AI practitioners
 - **Portfolio**: Showcase of projects and work
 - **Knowledge Base**: Curated resources and insights
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 16.1.3 (App Router)
 - **Styling**: Tailwind CSS with custom monochrome theme
@@ -19,13 +19,13 @@ A modern blog, AI guide, portfolio, and knowledge base built with Next.js, featu
 - **Typography**: Inter (body) + JetBrains Mono (headings/code)
 - **Deployment**: Vercel
 
-## 🎨 Design
+## Design
 
 - **Theme**: Monochrome (black/white) with seamless dark/light mode
 - **3D Animation**: Low poly wireframe morphing blob (Platonic solids)
 - **Style**: Minimalist, professional, code-focused aesthetic
 
-## 🚀 Getting Started
+## Getting Started
 
 ```bash
 # Install dependencies
@@ -41,7 +41,7 @@ pnpm build
 pnpm start
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 app/
@@ -55,10 +55,10 @@ app/
 └── [pages]/          # Other pages (projects, photos)
 ```
 
-## 🌐 Live Site
+## Live Site
 
 Visit [coresen.vercel.app](https://coresen.vercel.app)
 
-## 📝 License
+## License
 
 MIT  
