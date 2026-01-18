@@ -11,7 +11,6 @@ const navItems = [
   { label: <Link href="/profile">Profile</Link>, key: "/profile" },
   { label: <Link href="/blog">Blog</Link>, key: "/blog" },
   { label: <Link href="/projects">Projects</Link>, key: "/projects" },
-  { label: <Link href="/photos">Photos</Link>, key: "/photos" },
 ];
 
 export function Navbar() {

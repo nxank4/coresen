@@ -43,7 +43,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", type: "image/x-icon" },
+    ],
   },
 };
 
@@ -97,7 +100,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <AntdConfigProvider>
-              <main className="flex-auto min-w-0 mt-2 md:mt-6 flex flex-col px-6 sm:px-4 md:px-0 max-w-[640px] w-full">
+              <main className="flex-auto min-w-0 mt-2 md:mt-6 flex flex-col px-4 sm:px-6 md:px-8 lg:px-12 w-full max-w-screen-sm sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl xl:max-w-7xl mx-auto">
                 <Navbar />
                 {children}
                 <Footer />
