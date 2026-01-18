@@ -55,7 +55,7 @@ export default function Profile() {
             className="text-neutral-800 dark:text-neutral-200"
           >
             Explaining complex AI topics through{" "}
-            <Link href="/blog" className="text-inherit hover:underline">
+            <Link href="/blog" className="link-animated text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200">
               writing
             </Link>{" "}
             and{" "}
@@ -63,7 +63,7 @@ export default function Profile() {
               href={socialLinks.youtube || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-inherit hover:underline"
+              className="link-animated text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
             >
               video
             </a>

@@ -43,9 +43,9 @@ export default function Footer() {
     <AntFooter style={{ background: "transparent", textAlign: "center", padding: "24px 0" }}>
       <Space orientation="vertical" size="small" style={{ width: "100%" }}>
         <SocialLinks />
-        <Text type="secondary" className="text-neutral-600 dark:text-neutral-300">
-          © {YEAR} <Link href="/" className="text-inherit">{metaData.title}</Link>
-        </Text>
+            <Text type="secondary" className="text-neutral-600 dark:text-neutral-300">
+              © {YEAR} <Link href="/" className="link-animated text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200">{metaData.title}</Link>
+            </Text>
       </Space>
     </AntFooter>
   );
