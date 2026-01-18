@@ -20,6 +20,31 @@ function normalize(vertex: Vertex, radius: number = 1): Vertex {
 }
 
 /**
+ * Extract unique vertices from Three.js geometry
+ * Ensures we get the correct vertex count and positions
+ */
+function extractUniqueVertices(geometry: THREE.BufferGeometry): Vertex[] {
+  const positions = geometry.attributes.position;
+  const uniqueVertices = new Map<string, Vertex>();
+  const tolerance = 0.0001; // For floating point comparison
+  
+  for (let i = 0; i < positions.count; i++) {
+    const x = positions.getX(i);
+    const y = positions.getY(i);
+    const z = positions.getZ(i);
+    
+    // Round to tolerance to find unique vertices
+    const key = `${Math.round(x / tolerance)},${Math.round(y / tolerance)},${Math.round(z / tolerance)}`;
+    
+    if (!uniqueVertices.has(key)) {
+      uniqueVertices.set(key, { x, y, z });
+    }
+  }
+  
+  return Array.from(uniqueVertices.values());
+}
+
+/**
  * Generate low poly sphere vertices (minimal vertices)
  */
 export function generateSphereVertices(radius: number = 1, segments: number = 4): Vertex[] {
@@ -39,107 +64,49 @@ export function generateSphereVertices(radius: number = 1, segments: number = 4)
 }
 
 /**
- * Generate octahedron vertices (6 vertices, 8 faces)
+ * Generate octahedron vertices (6 unique vertices, 8 faces)
+ * Regular octahedron - dual of cube, extracted from Three.js geometry
  */
 export function generateOctahedronVertices(radius: number = 1): Vertex[] {
-  const vertices: Vertex[] = [
-    { x: 1, y: 0, z: 0 },
-    { x: -1, y: 0, z: 0 },
-    { x: 0, y: 1, z: 0 },
-    { x: 0, y: -1, z: 0 },
-    { x: 0, y: 0, z: 1 },
-    { x: 0, y: 0, z: -1 },
-  ];
-  
-  return vertices.map(v => normalize(v, radius));
+  const geom = new THREE.OctahedronGeometry(radius, 0);
+  return extractUniqueVertices(geom);
 }
 
 /**
- * Generate tetrahedron vertices (4 vertices)
+ * Generate tetrahedron vertices (4 unique vertices)
+ * Regular tetrahedron - extracted from Three.js geometry to ensure correctness
  */
 export function generateTetrahedronVertices(radius: number = 1): Vertex[] {
-  // Regular tetrahedron vertices
-  const t = 1.0 / Math.sqrt(2);
-  const vertices: Vertex[] = [
-    { x: 1, y: 1, z: 1 },
-    { x: -1, y: -1, z: 1 },
-    { x: -1, y: 1, z: -1 },
-    { x: 1, y: -1, z: -1 },
-  ];
-  
-  return vertices.map(v => normalize(v, radius));
+  const geom = new THREE.TetrahedronGeometry(radius, 0);
+  return extractUniqueVertices(geom);
 }
 
 /**
- * Generate cube vertices (8 vertices)
+ * Generate cube vertices (8 unique vertices)
+ * Regular hexahedron (cube) - extracted from Three.js geometry
  */
 export function generateCubeVertices(radius: number = 1): Vertex[] {
-  const vertices: Vertex[] = [
-    { x: -1, y: -1, z: -1 },
-    { x: 1, y: -1, z: -1 },
-    { x: 1, y: 1, z: -1 },
-    { x: -1, y: 1, z: -1 },
-    { x: -1, y: -1, z: 1 },
-    { x: 1, y: -1, z: 1 },
-    { x: 1, y: 1, z: 1 },
-    { x: -1, y: 1, z: 1 },
-  ];
-  
-  return vertices.map(v => normalize(v, radius));
+  const geom = new THREE.BoxGeometry(radius * 2, radius * 2, radius * 2, 1, 1, 1);
+  return extractUniqueVertices(geom);
 }
 
 /**
- * Generate icosahedron vertices (12 vertices)
+ * Generate icosahedron vertices (12 unique vertices)
+ * Regular icosahedron - 20 triangular faces, extracted from Three.js geometry
  */
 export function generateIcosahedronVertices(radius: number = 1): Vertex[] {
-  const t = (1.0 + Math.sqrt(5.0)) / 2.0; // Golden ratio
-  const vertices: Vertex[] = [
-    { x: -1, y: t, z: 0 },
-    { x: 1, y: t, z: 0 },
-    { x: -1, y: -t, z: 0 },
-    { x: 1, y: -t, z: 0 },
-    { x: 0, y: -1, z: t },
-    { x: 0, y: 1, z: t },
-    { x: 0, y: -1, z: -t },
-    { x: 0, y: 1, z: -t },
-    { x: t, y: 0, z: -1 },
-    { x: t, y: 0, z: 1 },
-    { x: -t, y: 0, z: -1 },
-    { x: -t, y: 0, z: 1 },
-  ];
-  
-  return vertices.map(v => normalize(v, radius));
+  const geom = new THREE.IcosahedronGeometry(radius, 0);
+  return extractUniqueVertices(geom);
 }
 
 /**
- * Generate dodecahedron vertices (20 vertices)
+ * Generate dodecahedron vertices (20 unique vertices)
+ * Regular dodecahedron - 12 pentagonal faces, dual of icosahedron
+ * Extracted from Three.js geometry to ensure correctness
  */
 export function generateDodecahedronVertices(radius: number = 1): Vertex[] {
-  const phi = (1.0 + Math.sqrt(5.0)) / 2.0; // Golden ratio
-  const vertices: Vertex[] = [
-    { x: -1, y: -1, z: -1 },
-    { x: -1, y: -1, z: 1 },
-    { x: -1, y: 1, z: -1 },
-    { x: -1, y: 1, z: 1 },
-    { x: 1, y: -1, z: -1 },
-    { x: 1, y: -1, z: 1 },
-    { x: 1, y: 1, z: -1 },
-    { x: 1, y: 1, z: 1 },
-    { x: 0, y: -1 / phi, z: -phi },
-    { x: 0, y: -1 / phi, z: phi },
-    { x: 0, y: 1 / phi, z: -phi },
-    { x: 0, y: 1 / phi, z: phi },
-    { x: -1 / phi, y: -phi, z: 0 },
-    { x: -1 / phi, y: phi, z: 0 },
-    { x: 1 / phi, y: -phi, z: 0 },
-    { x: 1 / phi, y: phi, z: 0 },
-    { x: -phi, y: 0, z: -1 / phi },
-    { x: -phi, y: 0, z: 1 / phi },
-    { x: phi, y: 0, z: -1 / phi },
-    { x: phi, y: 0, z: 1 / phi },
-  ];
-  
-  return vertices.map(v => normalize(v, radius));
+  const geom = new THREE.DodecahedronGeometry(radius, 0);
+  return extractUniqueVertices(geom);
 }
 
 /**
