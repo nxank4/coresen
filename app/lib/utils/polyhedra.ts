@@ -7,21 +7,9 @@ export interface Vertex {
 }
 
 /**
- * Normalize vertex to unit sphere
- */
-function normalize(vertex: Vertex, radius: number = 1): Vertex {
-  const length = Math.sqrt(vertex.x * vertex.x + vertex.y * vertex.y + vertex.z * vertex.z);
-  if (length === 0) return { x: 0, y: 0, z: 0 };
-  return {
-    x: (vertex.x / length) * radius,
-    y: (vertex.y / length) * radius,
-    z: (vertex.z / length) * radius,
-  };
-}
-
-/**
  * Extract unique vertices from Three.js geometry
  * Ensures we get the correct vertex count and positions
+ * Three.js geometries already have vertices normalized to the specified radius
  */
 function extractUniqueVertices(geometry: THREE.BufferGeometry): Vertex[] {
   const positions = geometry.attributes.position;
