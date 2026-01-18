@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lockfile:check": "pnpm install --frozen-lockfile --dry-run",
+    "lockfile:update": "pnpm install"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^2.0.3",

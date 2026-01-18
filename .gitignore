@@ -32,6 +32,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Ensure lockfile is always committed
+!pnpm-lock.yaml
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
