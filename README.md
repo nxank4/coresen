@@ -79,7 +79,7 @@ Vinhomes Grand Park, Nguyen Xien Street, Thu Duc City, Ho Chi Minh City, Vietnam
 - Over 1.57 million views and 19,000+ subscribers.  
 - Produced engaging crime and mystery content, showcasing storytelling skills.  
 
-### **DataDeeper (Blog)**  
+### **CoreSen (Blog)**  
 
 *Founder & Content Creator (2023 - Present)*  
 

@@ -1,6 +1,6 @@
 export const metaData = {
-  baseUrl: "https://datadeeper.vercel.app/",
-  title: "DataDeeper",
+  baseUrl: "https://coresen.vercel.app/",
+  title: "CoreSen",
   name: "Nguyen Xuan An",
   ogImage: "/opengraph-image.png",
   description:
@@ -8,9 +8,10 @@ export const metaData = {
 };
 
 export const socialLinks = {
-  twitter: "https://x.com/lunovian", // Add if applicable
-  github: "https://github.com/lunovian",
+  github: "https://github.com/nxank4",
   instagram: "", // Add if applicable
-  linkedin: "https://www.linkedin.com/in/lunovian/", // Add if applicable
+  linkedin: "https://www.linkedin.com/in/nxank4/",
+  kaggle: "https://www.kaggle.com/anmatngu",
   email: "mailto:nxan2911@gmail.com",
+  youtube: "https://www.youtube.com/@coresenyt",
 };
