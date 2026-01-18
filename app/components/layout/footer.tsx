@@ -3,7 +3,6 @@
 import React from "react";
 import {
   FaGithub,
-  FaInstagram,
   FaRss,
   FaLinkedinIn,
   FaKaggle,
@@ -29,7 +28,6 @@ function SocialLinks() {
   return (
     <Space size="middle">
       <SocialLink href={socialLinks.github} icon={FaGithub} />
-      <SocialLink href={socialLinks.instagram} icon={FaInstagram} />
       <SocialLink href={socialLinks.linkedin} icon={FaLinkedinIn} />
       <SocialLink href={socialLinks.kaggle} icon={FaKaggle} />
       <SocialLink href={socialLinks.email} icon={TbMailFilled} />

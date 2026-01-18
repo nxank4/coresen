@@ -9,7 +9,6 @@ export const metaData = {
 
 export const socialLinks = {
   github: "https://github.com/nxank4",
-  instagram: "",
   linkedin: "https://www.linkedin.com/in/nxank4/",
   kaggle: "https://www.kaggle.com/anmatngu",
   email: "mailto:nxan2911@gmail.com",

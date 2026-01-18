@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Typography, Avatar, Flex, Space } from "antd";
 import {
   FaGithub,
-  FaInstagram,
   FaLinkedinIn,
   FaKaggle,
   FaYoutube,
