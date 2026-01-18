@@ -142,7 +142,7 @@ code, pre, .prose code, .prose pre {
   margin-left: -1em;
   padding-right: 0.5em;
   width: 80%;
-  max-width: 700px;
+  max-width: 100%;
   cursor: pointer;
 }
 
