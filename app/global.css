@@ -13,27 +13,27 @@
 }
 
 :root {
-  --sh-class: #2d5e9e;
-  --sh-identifier: #354150;
-  --sh-sign: #8996a3;
-  --sh-string: #00a99a;
-  --sh-keyword: #f47067;
-  --sh-comment: #a19595;
-  --sh-jsxliterals: #6266d1;
-  --sh-property: #e25a1c;
-  --sh-entity: #e25a1c;
+  --sh-class: #525252;
+  --sh-identifier: #262626;
+  --sh-sign: #737373;
+  --sh-string: #404040;
+  --sh-keyword: #171717;
+  --sh-comment: #a3a3a3;
+  --sh-jsxliterals: #525252;
+  --sh-property: #404040;
+  --sh-entity: #404040;
 }
 
 .dark {
-  --sh-class: #4c97f8;
+  --sh-class: #d4d4d4;
   --sh-identifier: #ffffff;
-  --sh-sign: #a8b3c0;
-  --sh-string: #00d9bb;
-  --sh-keyword: #f47067;
-  --sh-comment: #8b8b8b;
-  --sh-jsxliterals: #818cf8;
-  --sh-property: #ff7a45;
-  --sh-entity: #ff7a45;
+  --sh-sign: #a3a3a3;
+  --sh-string: #e5e5e5;
+  --sh-keyword: #fafafa;
+  --sh-comment: #737373;
+  --sh-jsxliterals: #d4d4d4;
+  --sh-property: #e5e5e5;
+  --sh-entity: #e5e5e5;
 }
 
 html {
@@ -53,10 +53,22 @@ body {
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-jetbrains-mono), monospace;
+h1, h2 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h3, h4 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+h5, h6 {
+  font-family: var(--font-playfair), serif;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 code, pre, .prose code, .prose pre {
@@ -64,15 +76,25 @@ code, pre, .prose code, .prose pre {
 }
 
 .ant-typography h1,
-.ant-typography h2,
+.ant-typography h2 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
 .ant-typography h3,
-.ant-typography h4,
+.ant-typography h4 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
 .ant-typography h5,
 .ant-typography h6,
 .ant-typography-title {
-  font-family: var(--font-jetbrains-mono), monospace;
+  font-family: var(--font-playfair), serif;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .ant-typography,
@@ -99,8 +121,82 @@ code, pre, .prose code, .prose pre {
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
-.ant-menu-item a {
-  color: inherit;
+.ant-menu-item {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.ant-menu-title-content {
+  position: relative !important;
+  display: inline-block !important;
+}
+
+.ant-menu-item a,
+.ant-menu-item .ant-menu-title-content a,
+.nav-link {
+  color: inherit !important;
+  position: relative !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.ant-menu-item a::after,
+.ant-menu-item .ant-menu-title-content a::after,
+.nav-link::after,
+.ant-menu-title-content a::after {
+  content: "" !important;
+  position: absolute !important;
+  bottom: -2px !important;
+  left: 50% !important;
+  width: 0 !important;
+  height: 2px !important;
+  background-color: currentColor !important;
+  transform: translateX(-50%) !important;
+  transition: width 0.25s ease, opacity 0.25s ease !important;
+  opacity: 0 !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+
+.ant-menu-item a:hover::after,
+.ant-menu-item .ant-menu-title-content a:hover::after,
+.nav-link:hover::after,
+.ant-menu-item-active a::after,
+.ant-menu-item-selected a::after,
+.ant-menu-item-active .ant-menu-title-content a::after,
+.ant-menu-item-selected .ant-menu-title-content a::after {
+  width: 100% !important;
+  opacity: 1 !important;
+}
+
+/* Override any Ant Design default underline */
+.ant-menu-item::before,
+.ant-menu-item::after {
+  display: none !important;
+}
+
+.ant-menu-item-active::before,
+.ant-menu-item-selected::before {
+  display: none !important;
+}
+
+.ant-menu-light .ant-menu-item-selected,
+.ant-menu-light .ant-menu-item-selected .ant-menu-title-content,
+.ant-menu-light .ant-menu-item-selected .ant-menu-title-content a,
+.ant-menu-light .ant-menu-item-selected a,
+.nav-link-active,
+a.nav-link-active,
+.ant-menu-item-selected.nav-link-active,
+.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.nav-link-active,
+.ant-menu-item.ant-menu-item-selected .ant-menu-title-content .nav-link-active,
+.ant-menu-title-content .nav-link-active,
+li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content .nav-link-active,
+.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a,
+.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.ant-menu-item-selected,
+li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a,
+li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.ant-menu-item-selected {
+  color: rgba(0, 0, 0, 0.88) !important;
 }
 
 .dark .ant-menu-item,
@@ -111,7 +207,30 @@ code, pre, .prose code, .prose pre {
 .dark .ant-menu-item-active,
 .dark .ant-menu-item-selected,
 .dark .ant-menu-item-active a,
-.dark .ant-menu-item-selected a {
+.dark .ant-menu-item-selected a,
+.dark a.ant-menu-item-selected {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+.dark .ant-menu-light .ant-menu-item-selected,
+.dark .ant-menu-light .ant-menu-item-selected .ant-menu-title-content,
+.dark .ant-menu-light .ant-menu-item-selected .ant-menu-title-content a,
+.dark .ant-menu-light .ant-menu-item-selected a,
+.dark .ant-menu-dark .ant-menu-item-selected,
+.dark .ant-menu-dark .ant-menu-item-selected .ant-menu-title-content,
+.dark .ant-menu-dark .ant-menu-item-selected .ant-menu-title-content a,
+.dark .ant-menu-dark .ant-menu-item-selected a,
+.dark .nav-link-active,
+.dark a.nav-link-active,
+.dark .ant-menu-item-selected.nav-link-active,
+.dark .ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.nav-link-active,
+.dark .ant-menu-item.ant-menu-item-selected .ant-menu-title-content .nav-link-active,
+.dark .ant-menu-title-content .nav-link-active,
+.dark li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content .nav-link-active,
+.dark .ant-menu-item.ant-menu-item-selected .ant-menu-title-content a,
+.dark .ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.ant-menu-item-selected,
+.dark li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a,
+.dark li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.ant-menu-item-selected {
   color: rgba(255, 255, 255, 1) !important;
 }
 
@@ -120,8 +239,150 @@ code, pre, .prose code, .prose pre {
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
+.ant-btn,
+button {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.ant-btn-primary {
+  background-color: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.ant-btn-primary:hover:not(:disabled),
+.ant-btn-primary:focus:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  border-color: rgba(0, 0, 0, 0.8) !important;
+  color: #ffffff !important;
+}
+
+.ant-btn-primary:active:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  border-color: rgba(0, 0, 0, 0.7) !important;
+  color: #ffffff !important;
+}
+
+.dark .ant-btn-primary {
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.dark .ant-btn-primary:hover:not(:disabled),
+.dark .ant-btn-primary:focus:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  color: #000000 !important;
+}
+
+.dark .ant-btn-primary:active:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  color: #000000 !important;
+}
+
+.ant-btn-default {
+  background-color: transparent !important;
+  border-color: rgba(0, 0, 0, 0.3) !important;
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+.ant-btn-default:hover:not(:disabled),
+.ant-btn-default:focus:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.5) !important;
+  color: rgba(0, 0, 0, 1) !important;
+}
+
+.ant-btn-default:active:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.5) !important;
+  color: rgba(0, 0, 0, 1) !important;
+}
+
+.dark .ant-btn-default {
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.dark .ant-btn-default:hover:not(:disabled),
+.dark .ant-btn-default:focus:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+.dark .ant-btn-default:active:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+.ant-btn-link {
+  color: rgba(0, 0, 0, 0.6) !important;
+  position: relative !important;
+  text-decoration: none !important;
+}
+
+.ant-btn-link::after {
+  content: "" !important;
+  position: absolute !important;
+  bottom: 2px !important;
+  left: 50% !important;
+  width: 0 !important;
+  height: 1px !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  transform: translateX(-50%) !important;
+  transition: width 0.25s ease, background-color 0.2s ease !important;
+}
+
+.ant-btn-link:hover:not(:disabled)::after,
+.ant-btn-link:focus:not(:disabled)::after {
+  width: 100% !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.ant-btn-link:hover:not(:disabled),
+.ant-btn-link:focus:not(:disabled) {
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.dark .ant-btn-link {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.dark .ant-btn-link::after {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.dark .ant-btn-link:hover:not(:disabled)::after,
+.dark .ant-btn-link:focus:not(:disabled)::after {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.dark .ant-btn-link:hover:not(:disabled),
+.dark .ant-btn-link:focus:not(:disabled) {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.ant-spin-dot-item {
+  background-color: currentColor;
+}
+
+.ant-spin {
+  color: rgba(0, 0, 0, 0.88);
+}
+
+.dark .ant-spin {
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .ant-card .ant-typography-title {
-  font-family: var(--font-jetbrains-mono), monospace;
+  font-family: var(--font-playfair), serif;
 }
 
 .dark .ant-card.dark\:bg-white,
@@ -185,31 +446,172 @@ code, pre, .prose code, .prose pre {
 }
 
 .prose h1 {
-  @apply text-4xl font-semibold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
-  font-family: var(--font-jetbrains-mono), monospace;
+  @apply text-4xl font-bold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
+  font-family: var(--font-playfair), serif;
+  font-weight: 700;
 }
 
 .prose h2 {
   @apply text-xl font-semibold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
-  font-family: var(--font-jetbrains-mono), monospace;
+  font-family: var(--font-playfair), serif;
+  font-weight: 600;
 }
 
 .prose h3 {
-  @apply text-xl font-semibold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
-  font-family: var(--font-jetbrains-mono), monospace;
+  @apply text-xl font-normal tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
+  font-family: var(--font-playfair), serif;
+  font-weight: 400;
 }
 
 .prose h4 {
-  @apply text-lg font-semibold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
-  font-family: var(--font-jetbrains-mono), monospace;
+  @apply text-lg font-normal tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
+  font-family: var(--font-playfair), serif;
+  font-weight: 400;
 }
 
 .prose a {
-  @apply text-neutral-900 dark:text-neutral-100;
+  @apply text-neutral-600 dark:text-neutral-400;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.prose a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.3);
+  transform: translateX(-50%);
+  transition: width 0.25s ease, background-color 0.2s ease;
 }
 
 .prose a:hover {
-  @apply underline;
+  @apply text-neutral-800 dark:text-neutral-200;
+}
+
+.prose a:hover::after {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dark .prose a::after {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.dark .prose a:hover::after {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Animated underline for other links */
+.link-animated {
+  position: relative;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link-animated::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transform: translateX(-50%);
+  transition: width 0.25s ease;
+  opacity: 0.5;
+}
+
+.link-animated:hover::after {
+  width: 100%;
+  opacity: 1;
+}
+
+/* Card border animation from 4 corners - outer selection box effect */
+.card-border-animated {
+  position: relative;
+  border-radius: 8px;
+  overflow: visible;
+}
+
+.card-border-animated .ant-card-body {
+  position: relative;
+}
+
+.card-border-animated::before,
+.card-border-animated::after,
+.card-border-animated .ant-card-body::before,
+.card-border-animated .ant-card-body::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, width 0.25s ease, height 0.25s ease;
+  z-index: 1;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+/* Top-left corner - positioned outside */
+.card-border-animated::before {
+  top: -7px;
+  left: -7px;
+  width: 0;
+  height: 0;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 8px;
+}
+
+/* Bottom-right corner - positioned outside */
+.card-border-animated::after {
+  bottom: -7px;
+  right: -7px;
+  width: 0;
+  height: 0;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 8px;
+}
+
+/* Top-right corner - positioned outside */
+.card-border-animated .ant-card-body::before {
+  top: -7px;
+  right: -7px;
+  width: 0;
+  height: 0;
+  border-left: none;
+  border-bottom: none;
+  border-top-right-radius: 8px;
+}
+
+/* Bottom-left corner - positioned outside */
+.card-border-animated .ant-card-body::after {
+  bottom: -7px;
+  left: -7px;
+  width: 0;
+  height: 0;
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 8px;
+}
+
+.card-border-animated:hover::before,
+.card-border-animated:hover::after,
+.card-border-animated:hover .ant-card-body::before,
+.card-border-animated:hover .ant-card-body::after {
+  opacity: 1;
+  width: 26px;
+  height: 26px;
+}
+
+.dark .card-border-animated::before,
+.dark .card-border-animated::after,
+.dark .card-border-animated .ant-card-body::before,
+.dark .card-border-animated .ant-card-body::after {
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .prose strong {
