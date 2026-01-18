@@ -1,16 +1,71 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, Flex } from "antd";
+import { Menu, Flex, Spin } from "antd";
 import { ThemeSwitch } from "../ui/theme-switch";
 import { metaData } from "../../config";
 
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const [isPending] = useTransition();
+  const pathname = usePathname();
+  const isActive = pathname === href || pathname.startsWith(href + "/");
+
+  useEffect(() => {
+    const updateMenuColors = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      const selectedLinks = document.querySelectorAll(
+        ".ant-menu-item-selected .ant-menu-title-content a, .ant-menu-title-content a.ant-menu-item-selected"
+      );
+      
+      selectedLinks.forEach((link) => {
+        const element = link as HTMLElement;
+        if (isDark) {
+          element.style.setProperty("color", "rgba(255, 255, 255, 1)", "important");
+        } else {
+          element.style.setProperty("color", "rgba(0, 0, 0, 0.88)", "important");
+        }
+      });
+    };
+
+    const timer = setTimeout(updateMenuColors, 0);
+    updateMenuColors();
+    
+    const observer = new MutationObserver(() => {
+      setTimeout(updateMenuColors, 0);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <Link
+      href={href}
+      className={isActive ? "ant-menu-item-selected nav-link-active" : "nav-link"}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        textDecoration: "none",
+      }}
+    >
+      {isPending && <Spin size="small" />}
+      {children}
+    </Link>
+  );
+}
+
 const navItems = [
-  { label: <Link href="/profile">Profile</Link>, key: "/profile" },
-  { label: <Link href="/blog">Blog</Link>, key: "/blog" },
-  { label: <Link href="/projects">Projects</Link>, key: "/projects" },
+  { label: <NavLink href="/profile">Profile</NavLink>, key: "/profile" },
+  { label: <NavLink href="/blog">Blog</NavLink>, key: "/blog" },
+  { label: <NavLink href="/projects">Projects</NavLink>, key: "/projects" },
 ];
 
 export function Navbar() {
@@ -19,10 +74,56 @@ export function Navbar() {
   // Find the active key based on the current path
   const activeKey = navItems.find((item) => pathname.startsWith(item.key))?.key;
 
+  useEffect(() => {
+    const updateMenuColors = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      const selectedLinks = document.querySelectorAll(
+        ".ant-menu-item-selected .ant-menu-title-content a, .ant-menu-title-content a.ant-menu-item-selected"
+      );
+      
+      selectedLinks.forEach((link) => {
+        const element = link as HTMLElement;
+        if (isDark) {
+          element.style.setProperty("color", "rgba(255, 255, 255, 1)", "important");
+        } else {
+          element.style.setProperty("color", "rgba(0, 0, 0, 0.88)", "important");
+        }
+      });
+    };
+
+    updateMenuColors();
+    const observer = new MutationObserver(updateMenuColors);
+    observer.observe(document.body, { 
+      childList: true, 
+      subtree: true, 
+      attributes: true, 
+      attributeFilter: ["class"] 
+    });
+
+    const themeObserver = new MutationObserver(updateMenuColors);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => {
+      observer.disconnect();
+      themeObserver.disconnect();
+    };
+  }, [pathname]);
+
   return (
     <nav className="mb-8 py-5">
       <Flex justify="space-between" align="center">
-        <Link href="/" className="text-xl font-heading font-bold text-inherit no-underline">
+        <Link href="/" className="text-xl font-sans font-bold text-inherit no-underline flex items-center gap-2">
+          <Image
+            src="/logo.svg"
+            alt={metaData.title}
+            width={24}
+            height={24}
+            className="w-6 h-6"
+            style={{ color: "inherit" }}
+          />
           {metaData.title}
         </Link>
         <Flex align="center" gap="middle">
@@ -30,6 +131,7 @@ export function Navbar() {
             mode="horizontal"
             selectedKeys={activeKey ? [activeKey] : []}
             items={navItems}
+            theme={undefined}
             style={{ 
                 borderBottom: "none", 
                 backgroundColor: "transparent",
