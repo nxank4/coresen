@@ -1,9 +1,28 @@
+import type { Metadata } from "next";
 import { getBlogPosts } from "app/lib/posts";
+import { metaData } from "app/config";
 import { BlogListClient } from "./BlogListClient";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Blog",
-  description: "Nextfolio Blog",
+  description: "Explore insights in AI, data science, and machine learning through in-depth articles, tutorials, and guides by Nguyen Xuan An.",
+  alternates: {
+    canonical: `${metaData.baseUrl}blog`,
+  },
+  openGraph: {
+    title: "Blog | CoreSen",
+    description: "Explore insights in AI, data science, and machine learning through in-depth articles, tutorials, and guides.",
+    url: `${metaData.baseUrl}blog`,
+    images: [`${metaData.baseUrl}/og?title=${encodeURIComponent("Blog | CoreSen")}`],
+    siteName: metaData.name,
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog | CoreSen",
+    description: "Explore insights in AI, data science, and machine learning through in-depth articles, tutorials, and guides.",
+  },
 };
 
 export default function BlogPosts() {
@@ -20,11 +39,31 @@ export default function BlogPosts() {
   });
 
   return (
-    <section>
-      <h1 className="mb-8 text-2xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100">
-        Our Blog
-      </h1>
-      <BlogListClient posts={sortedBlogs} />
-    </section>
+    <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "Blog | CoreSen",
+            description: "Explore insights in AI, data science, and machine learning through in-depth articles, tutorials, and guides.",
+            url: `${metaData.baseUrl}blog`,
+            mainEntity: {
+              "@type": "Blog",
+              name: "CoreSen Blog",
+              description: "Articles on AI, data science, and machine learning",
+            },
+          }),
+        }}
+      />
+      <section>
+        <h1 className="mb-8 text-2xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100">
+          Our Blog
+        </h1>
+        <BlogListClient posts={sortedBlogs} />
+      </section>
+    </>
   );
 }
