@@ -34,6 +34,9 @@ export async function generateMetadata(props): Promise<Metadata | undefined> {
   return {
     title,
     description,
+    alternates: {
+      canonical: `${metaData.baseUrl}/blog/${post.slug}`,
+    },
     openGraph: {
       title,
       description,
@@ -83,6 +86,7 @@ export default async function Blog(props) {
             author: {
               "@type": "Person",
               name: metaData.name,
+              url: `${metaData.baseUrl}profile`,
             },
           }),
         }}
