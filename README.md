@@ -29,16 +29,16 @@ A modern blog, AI guide, portfolio, and knowledge base built with Next.js, featu
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Run development server
-pnpm dev
+bun run dev
 
 # Build for production
-pnpm build
+bun run build
 
 # Start production server
-pnpm start
+bun run start
 ```
 
 ## Project Structure
