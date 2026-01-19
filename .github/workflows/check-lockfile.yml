@@ -4,14 +4,14 @@ on:
   pull_request:
     paths:
       - 'package.json'
-      - 'pnpm-lock.yaml'
+      - 'bun.lock'
   push:
     branches:
       - main
       - 'feature/**'
     paths:
       - 'package.json'
-      - 'pnpm-lock.yaml'
+      - 'bun.lock'
 
 jobs:
   check-lockfile:
@@ -19,16 +19,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - uses: pnpm/action-setup@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: 10
-      
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
+          bun-version: latest
       
       - name: Check lockfile
         run: |
-          pnpm install --frozen-lockfile
+          bun install --frozen-lockfile
           echo "✅ Lockfile is valid!"
