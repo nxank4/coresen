@@ -3,11 +3,11 @@
 
 set -e
 
-echo "🔍 Checking if pnpm-lock.yaml is in sync with package.json..."
+echo "🔍 Checking if bun.lock is in sync with package.json..."
 
-if ! pnpm install --frozen-lockfile --dry-run > /dev/null 2>&1; then
-  echo "❌ ERROR: pnpm-lock.yaml is out of sync with package.json"
-  echo "📦 Run 'pnpm install' to update the lockfile"
+if ! bun install --frozen-lockfile > /dev/null 2>&1; then
+  echo "❌ ERROR: bun.lock is out of sync with package.json"
+  echo "📦 Run 'bun install' to update the lockfile"
   exit 1
 fi
 

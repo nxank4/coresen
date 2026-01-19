@@ -2,11 +2,11 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lockfile:check": "pnpm install --frozen-lockfile --dry-run",
-    "lockfile:update": "pnpm install"
+    "dev": "bun --bun next dev",
+    "build": "bun --bun next build",
+    "start": "bun --bun next start",
+    "lockfile:check": "bun install --frozen-lockfile",
+    "lockfile:update": "bun install"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^2.0.3",
