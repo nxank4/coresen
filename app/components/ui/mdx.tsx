@@ -87,8 +87,9 @@ function Tags(props) {
         if (typeof child === "string" || typeof child === "number") {
           return String(child);
         }
-        if (typeof child === "object" && child !== null && "props" in child) {
-          return extractText(child.props.children);
+        if (React.isValidElement(child)) {
+          const element = child as React.ReactElement<{ children?: React.ReactNode }>;
+          return extractText(element.props.children);
         }
         return "";
       })
