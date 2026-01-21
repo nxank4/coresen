@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -6,6 +6,7 @@ import { highlight } from "sugar-high";
 import { TweetComponent } from "../features/tweet";
 import { CaptionComponent } from "./caption";
 import { YouTubeComponent } from "../features/youtube";
+import { hoverBrightness } from "../../lib/utils/animations";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import "katex/dist/katex.min.css";
@@ -69,6 +70,63 @@ function Callout(props) {
   );
 }
 
+function Tags(props) {
+  const extractText = (children) => {
+    if (typeof children === "string") {
+      return children;
+    }
+    if (typeof children === "number") {
+      return String(children);
+    }
+    if (!children) {
+      return "";
+    }
+    
+    return Children.toArray(children)
+      .map((child) => {
+        if (typeof child === "string" || typeof child === "number") {
+          return String(child);
+        }
+        if (React.isValidElement(child)) {
+          const element = child as React.ReactElement<{ children?: React.ReactNode }>;
+          return extractText(element.props.children);
+        }
+        return "";
+      })
+      .join("");
+  };
+
+  const text = extractText(props.children);
+  const trimmedText = text.trim();
+  
+  if (!trimmedText || !trimmedText.toLowerCase().startsWith("tags:")) {
+    return <p {...props} />;
+  }
+
+  const tagsText = trimmedText.replace(/^tags:\s*/i, "");
+  const tags = tagsText
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+
+  if (tags.length === 0) {
+    return <p {...props} />;
+  }
+
+  return (
+    <div className="my-6 flex flex-wrap gap-2 justify-center">
+      {tags.map((tag, index) => (
+        <span
+          key={index}
+          className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700"
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function slugify(str) {
   return str
     .toString()
@@ -83,17 +141,29 @@ function slugify(str) {
 function createHeading(level) {
   const Heading = ({ children }) => {
     let slug = slugify(children);
+    const baseTextColor = "text-neutral-900 dark:text-neutral-100";
+    const animationClasses = hoverBrightness.classes;
+    
+    const headingClasses = {
+      1: `${baseTextColor} text-4xl md:text-5xl font-bold mt-8 mb-4 inline-block ${animationClasses}`,
+      2: `${baseTextColor} text-[30px] md:text-4xl font-semibold mt-8 mb-4 inline-block ${animationClasses}`,
+      3: `${baseTextColor} text-[25px] font-semibold mt-6 mb-3 inline-block ${animationClasses}`,
+      4: `${baseTextColor} text-xl font-semibold mt-6 mb-3 inline-block ${animationClasses}`,
+      5: `${baseTextColor} text-lg font-semibold mt-4 mb-2 inline-block ${animationClasses}`,
+      6: `${baseTextColor} text-base font-semibold mt-4 mb-2 inline-block ${animationClasses}`,
+    };
     return React.createElement(
       `h${level}`,
-      { id: slug, className: "text-neutral-900 dark:text-neutral-100" },
+      { id: slug, className: headingClasses[level] || `${baseTextColor} inline-block ${animationClasses}` },
       [
+        children,
         React.createElement("a", {
           href: `#${slug}`,
           key: `link-${slug}`,
-          className: "anchor",
+          className: `anchor ${hoverBrightness.classes}`,
+          "aria-label": `Link to ${slug}`,
         }),
-      ],
-      children
+      ]
     );
   };
   Heading.displayName = `Heading${level}`;
@@ -116,6 +186,7 @@ let components = {
   Table,
   del: Strikethrough,
   Callout,
+  p: Tags,
 };
 
 export function CustomMDX(props) {

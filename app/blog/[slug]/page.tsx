@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/ui/mdx";
 import { getBlogPosts } from "app/lib/posts";
-import { formatDate } from "app/lib/utils";
+import { estimateReadingTimeMinutes, formatDate } from "app/lib/utils";
 import { metaData } from "app/config";
 import { BlogPostHeader } from "./BlogPostHeader";
 
@@ -66,6 +66,8 @@ export default async function Blog(props) {
     notFound();
   }
 
+  const readingTimeMinutes = estimateReadingTimeMinutes(post.content);
+
   return (
     <section>
       <script
@@ -91,8 +93,12 @@ export default async function Blog(props) {
           }),
         }}
       />
-      <BlogPostHeader title={post.metadata.title} publishedAt={post.metadata.publishedAt} />
-      <article className="prose prose-quoteless prose-neutral dark:prose-invert">
+      <BlogPostHeader
+        title={post.metadata.title}
+        publishedAt={post.metadata.publishedAt}
+        readingTimeMinutes={readingTimeMinutes}
+      />
+      <article className="prose prose-quoteless prose-neutral dark:prose-invert max-w-none">
         <CustomMDX source={post.content} />
       </article>
     </section>

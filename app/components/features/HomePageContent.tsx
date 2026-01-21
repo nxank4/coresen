@@ -1,7 +1,8 @@
 "use client";
 
-import React, { Suspense, useTransition, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Typography, Card, Flex, Button, Space, Spin } from "antd";
@@ -27,6 +28,7 @@ interface BlogPost {
   metadata: {
     title: string;
     publishedAt: string;
+    image?: string;
   };
 }
 
@@ -35,7 +37,8 @@ interface HomePageProps {
 }
 
 export function HomePageContent({ recentBlogs }: HomePageProps) {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
+  const [cardLoadingSlug, setCardLoadingSlug] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
@@ -44,9 +47,13 @@ export function HomePageContent({ recentBlogs }: HomePageProps) {
   }, []);
 
   const handleNavigation = (href: string) => {
-    startTransition(() => {
-      router.push(href);
-    });
+    setIsPending(true);
+    router.push(href);
+  };
+
+  const handleCardClick = (slug: string) => {
+    setCardLoadingSlug(slug);
+    router.push(`/blog/${slug}`);
   };
 
   if (!mounted) {
@@ -164,26 +171,76 @@ export function HomePageContent({ recentBlogs }: HomePageProps) {
                 </Button>
         </div>
         <Flex vertical gap="middle">
-          {recentBlogs.map((post) => (
-            <div key={post.slug}>
-              <Card
-                hoverable
-                size="small"
-                style={{ width: "100%", cursor: "pointer" }}
-                className="card-border-animated bg-white dark:!bg-white dark:!border-neutral-200 transition-all hover:shadow-md"
-                onClick={() => handleNavigation(`/blog/${post.slug}`)}
-              >
-                <Flex justify="space-between" align="center" wrap="wrap" gap="small">
-                  <Text strong style={{ fontSize: 16 }} className="!text-neutral-900 dark:!text-neutral-900">
-                    {post.metadata.title}
-                  </Text>
-                  <Text type="secondary" className="!text-neutral-600 dark:!text-neutral-600 text-sm">
-                    {formatDate(post.metadata.publishedAt, false)}
-                  </Text>
-                </Flex>
-              </Card>
-            </div>
-          ))}
+          {recentBlogs.map((post) => {
+            const isCardLoading = cardLoadingSlug === post.slug;
+            const initials =
+              post.metadata.title
+                .split(/\s+/)
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((w) => w[0]?.toUpperCase())
+                .join("") || "BL";
+
+            return (
+              <div key={post.slug}>
+                <Card
+                  hoverable
+                  size="small"
+                  style={{ width: "100%", cursor: "pointer", opacity: isCardLoading ? 0.6 : 1, backgroundColor: "transparent", minHeight: "120px" }}
+                  className="card-shadow-offset"
+                  onClick={() => handleCardClick(post.slug)}
+                >
+                  <div className="flex gap-4 items-center h-full">
+                    <div
+                      className="relative w-32 h-32 rounded-lg overflow-hidden bg-neutral-200 dark:bg-neutral-800 flex-shrink-0 flex items-center justify-center"
+                      aria-hidden="true"
+                    >
+                      {post.metadata.image ? (
+                        <Image
+                          src={post.metadata.image}
+                          alt={post.metadata.title}
+                          fill
+                          sizes="128px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <span className="text-neutral-700 dark:text-neutral-200 font-semibold text-lg">
+                          {initials}
+                        </span>
+                      )}
+                    </div>
+
+                    <Flex
+                      vertical
+                      justify="space-between"
+                      style={{ width: "100%", minHeight: "96px" }}
+                    >
+                      <Text
+                        strong
+                        style={{ fontSize: 16, lineHeight: 1.4 }}
+                        className="text-neutral-900 dark:text-neutral-100"
+                      >
+                        {post.metadata.title}
+                      </Text>
+                      <Text
+                        type="secondary"
+                        className="text-neutral-600 dark:text-neutral-400"
+                        style={{ fontSize: 14 }}
+                      >
+                        {formatDate(post.metadata.publishedAt, false)}
+                      </Text>
+                    </Flex>
+                  </div>
+                  {isCardLoading && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-neutral-500">
+                      <Spin size="small" />
+                      <span>Loading...</span>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            );
+          })}
         </Flex>
       </div>
     </section>
