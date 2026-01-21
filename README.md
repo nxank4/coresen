@@ -1,29 +1,37 @@
 # CoreSen
 
-A modern blog, AI guide, portfolio, and knowledge base built with Next.js, featuring low poly 3D morphing animations and a monochrome design system.
+A personal blog and portfolio showcasing AI engineering and data science work, featuring in-depth articles, research insights, and project demonstrations.
+
+## About
+
+CoreSen is the digital space of an AI Engineer and Data Scientist, dedicated to sharing knowledge, research findings, and practical insights in artificial intelligence, machine learning, and data science.
 
 ## Features
 
-- **Blog**: In-depth articles on AI, data science, and machine learning
-- **AI Guide**: Comprehensive guides and tutorials for AI practitioners
-- **Portfolio**: Showcase of projects and work
-- **Knowledge Base**: Curated resources and insights
+### Blog
+
+- **Research Articles**: Deep dives into cutting-edge AI research, algorithms, and methodologies
+- **Technical Tutorials**: Practical guides for implementing AI/ML solutions
+- **Industry Insights**: Analysis of trends, tools, and best practices in data science
+- **Project Case Studies**: Detailed breakdowns of real-world AI projects and their outcomes
+
+### Portfolio
+
+- **AI Projects**: Showcase of machine learning models, data pipelines, and AI applications
+- **Research Contributions**: Publications, experiments, and open-source contributions
+- **Technical Skills**: Demonstrations of expertise across the AI/ML stack
+
+## Content Focus
+
+- **Machine Learning**: Model development, training strategies, and optimization techniques
+- **Deep Learning**: Neural network architectures, transfer learning, and advanced techniques
+- **Data Science**: Data analysis, visualization, and statistical modeling
+- **AI Engineering**: Production systems, MLOps, and scalable AI infrastructure
+- **Research**: Academic and applied research in artificial intelligence
 
 ## Tech Stack
 
-- **Framework**: Next.js 16.1.3 (App Router)
-- **Styling**: Tailwind CSS with custom monochrome theme
-- **UI Components**: Ant Design
-- **3D Graphics**: Three.js, React Three Fiber
-- **Content**: MDX with syntax highlighting
-- **Typography**: Inter (body) + JetBrains Mono (headings/code)
-- **Deployment**: Vercel
-
-## Design
-
-- **Theme**: Monochrome (black/white) with seamless dark/light mode
-- **3D Animation**: Low poly wireframe morphing blob (Platonic solids)
-- **Style**: Minimalist, professional, code-focused aesthetic
+Built with Next.js, TypeScript, and modern web technologies. Content authored in MDX with code syntax highlighting.
 
 ## Getting Started
 
@@ -41,24 +49,10 @@ bun run build
 bun run start
 ```
 
-## Project Structure
-
-```
-app/
-├── components/
-│   ├── features/     # Feature components (3D blob, homepage, etc.)
-│   ├── layout/       # Layout components (nav, footer)
-│   └── ui/           # UI components (theme switch, MDX renderer)
-├── lib/              # Utilities and helpers
-├── blog/             # Blog posts (MDX)
-├── profile/          # Profile page
-└── [pages]/          # Other pages (projects, photos)
-```
-
 ## Live Site
 
 Visit [coresen.vercel.app](https://coresen.vercel.app)
 
 ## License
 
-MIT  
+This project is licensed under the MIT License. See the LICENSE file for details.
