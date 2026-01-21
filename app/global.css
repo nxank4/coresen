@@ -397,27 +397,44 @@ button {
   color: rgba(0, 0, 0, 0.88) !important;
 }
 
-/* Keep prose for MDX content */
+/* MDX heading anchors: show # symbol on hover, positioned next to title */
 .prose .anchor {
-  @apply absolute invisible no-underline;
-  margin-left: -1em;
-  padding-right: 0.5em;
-  width: 80%;
-  max-width: 100%;
+  @apply inline-block no-underline;
+  margin-left: 0.5em;
+  padding: 0;
+  width: auto;
   cursor: pointer;
-}
-
-.anchor:hover {
-  @apply visible;
-}
-
-.prose .anchor:after {
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  text-decoration: none !important;
   @apply text-neutral-400 dark:text-neutral-500;
+}
+
+.prose .anchor::after {
+  content: "";
+}
+
+.prose .anchor::before {
   content: "#";
 }
 
+.prose .anchor:hover {
+  opacity: 1;
+  text-decoration: none !important;
+  @apply text-neutral-950 dark:text-neutral-50;
+}
+
 .prose *:hover > .anchor {
-  @apply visible;
+  opacity: 1;
+}
+
+.prose *:hover > .anchor:hover {
+  @apply text-neutral-950 dark:text-neutral-50;
+}
+
+.prose .anchor:focus {
+  opacity: 1;
+  text-decoration: none !important;
 }
 
 .prose pre {
@@ -452,13 +469,21 @@ button {
 }
 
 .prose h2 {
-  @apply text-xl font-semibold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
+  @apply font-semibold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
+  font-size: 30px;
   font-family: var(--font-playfair), serif;
   font-weight: 600;
 }
 
+@media (min-width: 768px) {
+  .prose h2 {
+    font-size: 2.25rem; /* 36px - equivalent to text-4xl */
+  }
+}
+
 .prose h3 {
-  @apply text-xl font-normal tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
+  @apply font-semibold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
+  font-size: 25px;
   font-family: var(--font-playfair), serif;
   font-weight: 400;
 }
@@ -469,14 +494,14 @@ button {
   font-weight: 400;
 }
 
-.prose a {
+.prose a:not(.anchor) {
   @apply text-neutral-600 dark:text-neutral-400;
   position: relative;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.prose a::after {
+.prose a:not(.anchor)::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -488,31 +513,33 @@ button {
   transition: width 0.25s ease, background-color 0.2s ease;
 }
 
-.prose a:hover {
+.prose a:not(.anchor):hover {
   @apply text-neutral-800 dark:text-neutral-200;
 }
 
-.prose a:hover::after {
+.prose a:not(.anchor):hover::after {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-.dark .prose a::after {
+.dark .prose a:not(.anchor)::after {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
-.dark .prose a:hover::after {
+.dark .prose a:not(.anchor):hover::after {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
-/* Animated underline for other links */
-.link-animated {
+/* Reusable animated underline for links */
+.link-animated,
+.underline-animated {
   position: relative;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.link-animated::after {
+.link-animated::after,
+.underline-animated::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -521,13 +548,42 @@ button {
   height: 1px;
   background-color: currentColor;
   transform: translateX(-50%);
-  transition: width 0.25s ease;
+  transition: width 0.25s ease, opacity 0.2s ease;
   opacity: 0.5;
 }
 
-.link-animated:hover::after {
+.link-animated:hover::after,
+.underline-animated:hover::after {
   width: 100%;
   opacity: 1;
+}
+
+/* Card with offset shadow animation */
+.card-shadow-offset {
+  border: 2px solid;
+  border-color: rgba(0, 0, 0, 0.28);
+  /* subtle secondary border (softer than the main border) */
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+  transform: translate3d(0, 0, 0);
+  will-change: transform, box-shadow;
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.card-shadow-offset:hover {
+  transform: translate3d(-2px, -2px, 0);
+  box-shadow: 4px 4px 0 1px rgba(0, 0, 0, 0.26),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.dark .card-shadow-offset {
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.dark .card-shadow-offset:hover {
+  box-shadow: 4px 4px 0 1px rgba(255, 255, 255, 0.34),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14);
 }
 
 /* Card border animation from 4 corners - outer selection box effect */
