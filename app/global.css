@@ -438,19 +438,104 @@ button {
 }
 
 .prose pre {
-  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-4;
+  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-800;
+  margin: 1.5rem 0;
+  position: relative;
+  padding: 1rem;
+}
+
+/* Custom scrollbar for code blocks */
+.prose pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.prose pre::-webkit-scrollbar-track {
+  @apply bg-neutral-100 dark:bg-neutral-800 rounded;
+}
+
+.prose pre::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300 dark:bg-neutral-600 rounded;
+}
+
+.prose pre::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-400 dark:bg-neutral-500;
 }
 
 .prose code {
-  @apply px-1 py-0.5 rounded-lg;
+  @apply px-1.5 py-0.5 rounded text-sm font-mono;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: inherit;
+}
+
+.dark .prose code {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .prose pre code {
   @apply p-0;
   border: initial;
-  line-height: 1.5;
+  line-height: 1.75;
   background-color: transparent;
   font-weight: 400;
+  display: block;
+  padding: 0;
+  color: inherit;
+}
+
+.dark .prose pre code {
+  background-color: transparent;
+}
+
+/* Sugar-high syntax highlighting styles */
+.prose pre code {
+  color: var(--sh-identifier, inherit);
+}
+
+.prose pre code [class*="sh__token"] {
+  color: var(--sh-identifier, inherit);
+}
+
+.prose pre code [class*="keyword"] {
+  color: var(--sh-keyword);
+  font-weight: 500;
+}
+
+.prose pre code [class*="string"] {
+  color: var(--sh-string);
+}
+
+.prose pre code [class*="comment"] {
+  color: var(--sh-comment);
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.prose pre code [class*="class"] {
+  color: var(--sh-class);
+}
+
+.prose pre code [class*="property"] {
+  color: var(--sh-property);
+}
+
+.prose pre code [class*="entity"] {
+  color: var(--sh-entity);
+}
+
+.prose pre code [class*="sign"] {
+  color: var(--sh-sign);
+}
+
+.prose pre code [class*="jsxliterals"] {
+  color: var(--sh-jsxliterals);
+}
+
+.prose pre code [class*="number"] {
+  color: var(--sh-string);
+}
+
+.prose pre code [class*="function"] {
+  color: var(--sh-class);
 }
 
 .prose img {

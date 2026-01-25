@@ -31,9 +31,143 @@ function RoundedImage(props) {
   return <Image alt={props.alt} className="rounded-lg" {...props} />;
 }
 
-function Code({ children, ...props }) {
-  let codeHTML = highlight(children);
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+// Extract text content from React children
+function extractCodeText(children) {
+  if (typeof children === "string") {
+    return children;
+  }
+  if (typeof children === "number") {
+    return String(children);
+  }
+  if (!children) {
+    return "";
+  }
+  
+  return Children.toArray(children)
+    .map((child) => {
+      if (typeof child === "string" || typeof child === "number") {
+        return String(child);
+      }
+      if (React.isValidElement(child)) {
+        const element = child as React.ReactElement<{ children?: React.ReactNode }>;
+        return extractCodeText(element.props.children);
+      }
+      return "";
+    })
+    .join("");
+}
+
+// Get language from className (e.g., "language-javascript" -> "javascript")
+function getLanguageFromClassName(className) {
+  if (!className) return null;
+  const match = className.match(/language-(\w+)/);
+  return match ? match[1] : null;
+}
+
+// Format language name for display
+function formatLanguageName(lang) {
+  if (!lang) return "";
+  const langMap = {
+    js: "JavaScript",
+    jsx: "JSX",
+    ts: "TypeScript",
+    tsx: "TSX",
+    py: "Python",
+    rb: "Ruby",
+    sh: "Shell",
+    bash: "Bash",
+    zsh: "Zsh",
+    json: "JSON",
+    yaml: "YAML",
+    yml: "YAML",
+    md: "Markdown",
+    html: "HTML",
+    css: "CSS",
+    scss: "SCSS",
+    sass: "SASS",
+    sql: "SQL",
+    go: "Go",
+    rs: "Rust",
+    php: "PHP",
+    java: "Java",
+    cpp: "C++",
+    c: "C",
+    cs: "C#",
+    swift: "Swift",
+    kt: "Kotlin",
+    scala: "Scala",
+    r: "R",
+    matlab: "MATLAB",
+    jl: "Julia",
+  };
+  return langMap[lang.toLowerCase()] || lang.charAt(0).toUpperCase() + lang.slice(1);
+}
+
+function Code({ children, className, ...props }) {
+  const codeText = extractCodeText(children);
+  const language = getLanguageFromClassName(className);
+  const isCodeBlock = className?.includes("language-");
+  
+  // For code blocks (inside <pre>), highlight the code
+  if (isCodeBlock && codeText) {
+    const codeHTML = highlight(codeText);
+    
+    return (
+      <code
+        className={`block ${className || ""}`}
+        {...props}
+        dangerouslySetInnerHTML={{ __html: codeHTML }}
+        data-language={language || undefined}
+      />
+    );
+  }
+  
+  // For inline code, simple highlight
+  if (codeText && !isCodeBlock) {
+    const codeHTML = highlight(codeText);
+    return (
+      <code
+        className={className}
+        {...props}
+        dangerouslySetInnerHTML={{ __html: codeHTML }}
+      />
+    );
+  }
+  
+  return <code className={className} {...props}>{children}</code>;
+}
+
+function Pre({ children, className, ...props }) {
+  // Extract code element and language from children
+  let codeElement = null;
+  let language = null;
+  
+  Children.forEach(children, (child) => {
+    if (React.isValidElement(child) && child.type === "code") {
+      codeElement = child;
+      const codeClassName = (child.props as { className?: string })?.className || "";
+      language = getLanguageFromClassName(codeClassName);
+    }
+  });
+  
+  const displayLanguage = language ? formatLanguageName(language) : null;
+  const preClassName = `bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-800 py-4 px-4 text-sm font-mono ${className || ""}`;
+  
+  return (
+    <div className="relative my-6 group">
+      {displayLanguage && (
+        <div className="absolute top-0 right-0 px-3 py-1 text-xs font-medium text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800 border-b border-l border-neutral-200 dark:border-neutral-700 rounded-bl-lg rounded-tr-lg z-10">
+          {displayLanguage}
+        </div>
+      )}
+      <pre
+        className={preClassName}
+        {...props}
+      >
+        {children}
+      </pre>
+    </div>
+  );
 }
 
 function Table({ data }) {
@@ -182,6 +316,7 @@ let components = {
   StaticTweet: TweetComponent,
   Caption: CaptionComponent,
   YouTube: YouTubeComponent,
+  pre: Pre,
   code: Code,
   Table,
   del: Strikethrough,
