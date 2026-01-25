@@ -53,6 +53,16 @@ bun run start
 
 Visit [coresen.vercel.app](https://coresen.vercel.app)
 
+## RSS Feed
+
+Stay updated with the latest blog posts by subscribing to the RSS feed:
+
+[![RSS Feed](https://img.shields.io/badge/RSS-Feed-orange)](https://coresen.vercel.app/rss.xml)
+
+- **RSS 2.0**: [https://coresen.vercel.app/rss.xml](https://coresen.vercel.app/rss.xml)
+- **Atom**: [https://coresen.vercel.app/atom.xml](https://coresen.vercel.app/atom.xml)
+- **JSON Feed**: [https://coresen.vercel.app/feed.json](https://coresen.vercel.app/feed.json)
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
