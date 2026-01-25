@@ -63,18 +63,6 @@ Stay updated with the latest blog posts by subscribing to the RSS feed:
 - **Atom**: [https://coresen.vercel.app/atom.xml](https://coresen.vercel.app/atom.xml)
 - **JSON Feed**: [https://coresen.vercel.app/feed.json](https://coresen.vercel.app/feed.json)
 
-## Recent Blog Posts
-
-| Title | Categories | Date |
-|-------|------------|------|
-| [Exploring Feynman AI: A Revolution in Scientific Discovery](https://coresen.vercel.app/blog/feyman-ai) | Feynman AI, Scientific Discovery, Symbolic Regression, AI in Science | Dec 8, 2024 |
-| [Exploring VAR: Scalable Image Generation with Visual Autoregressive Modeling](https://coresen.vercel.app/blog/visual-autoregressive-modeling) | Visual Autoregressive Modeling, VAR, Image Generation, AI Research | Dec 8, 2024 |
-| [Discover HailuoAI: The Next-Generation AI Video Solution](https://coresen.vercel.app/blog/hailuoai) | HailuoAI, AI Video, Video Analysis, Content Creation | Dec 8, 2024 |
-| [Emerging Trends in Data Agents: Shaping the Future of AI](https://coresen.vercel.app/blog/ai-agents) | Data Agents, AI Trends, Real-Time Insights, Industry Transformation | Dec 8, 2024 |
-
-
-*Table is auto-generated from blog posts. View full list at [coresen.vercel.app/blog](https://coresen.vercel.app/blog)*
-
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
