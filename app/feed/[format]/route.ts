@@ -62,7 +62,7 @@ export async function GET(_: Request, props: { params: Promise<{ format: string 
     
     const publishedDate = new Date(post.metadata.publishedAt);
 
-    feed.addItem({
+    const feedItem: any = {
       title: post.metadata.title,
       id: postUrl,
       link: postUrl,
@@ -76,12 +76,18 @@ export async function GET(_: Request, props: { params: Promise<{ format: string 
       ],
       date: publishedDate,
       published: publishedDate,
+      updated: publishedDate,
       image: postImage,
-      category: categories.map((tag) => ({
+    };
+
+    if (categories.length > 0) {
+      feedItem.category = categories.map((tag) => ({
         name: tag,
         term: tag,
-      })),
-    });
+      }));
+    }
+
+    feed.addItem(feedItem);
   });
 
   const responseMap: Record<string, { content: string; contentType: string }> =
