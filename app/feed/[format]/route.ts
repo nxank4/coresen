@@ -32,10 +32,15 @@ export async function GET(_: Request, props: { params: Promise<{ format: string 
     description: metaData.description,
     id: BaseUrl,
     link: BaseUrl,
+    language: "en",
     copyright: `All rights reserved ${new Date().getFullYear()}, ${
       metaData.title
     }`,
     generator: "Feed for Node.js",
+    author: {
+      name: metaData.name,
+      email: "nxan2911@gmail.com",
+    },
     feedLinks: {
       json: `${BaseUrl}feed.json`,
       atom: `${BaseUrl}atom.xml`,
@@ -50,17 +55,32 @@ export async function GET(_: Request, props: { params: Promise<{ format: string 
     const categories = post.metadata.tags
       ? post.metadata.tags.split(",").map((tag) => tag.trim())
       : [];
+    
+    const postImage = post.metadata.image
+      ? `${BaseUrl}${post.metadata.image.startsWith("/") ? post.metadata.image.slice(1) : post.metadata.image}`
+      : `${BaseUrl}${metaData.ogImage.startsWith("/") ? metaData.ogImage.slice(1) : metaData.ogImage}`;
+    
+    const publishedDate = new Date(post.metadata.publishedAt);
 
     feed.addItem({
       title: post.metadata.title,
       id: postUrl,
       link: postUrl,
       description: post.metadata.summary,
+      content: post.metadata.summary,
+      author: [
+        {
+          name: metaData.name,
+          email: "nxan2911@gmail.com",
+        },
+      ],
+      date: publishedDate,
+      published: publishedDate,
+      image: postImage,
       category: categories.map((tag) => ({
         name: tag,
         term: tag,
       })),
-      date: new Date(post.metadata.publishedAt),
     });
   });
 
