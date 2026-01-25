@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useTransition } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, Flex, Spin } from "antd";
+import { useTheme } from "next-themes";
 import { ThemeSwitch } from "../ui/theme-switch";
 import { metaData } from "../../config";
 
@@ -70,9 +71,23 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const { theme, systemTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   // Find the active key based on the current path
   const activeKey = navItems.find((item) => pathname.startsWith(item.key))?.key;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Determine current theme (considering system theme)
+  // Default to light mode if theme is not yet determined
+  const currentTheme = theme === "system" ? (systemTheme || "light") : (theme || "light");
+  const isDark = currentTheme === "dark";
+  
+  // Get logo path based on theme
+  const logoPath = isDark ? "/logo-dark.svg" : "/logo-light.svg";
 
   useEffect(() => {
     const updateMenuColors = () => {
@@ -116,14 +131,18 @@ export function Navbar() {
     <nav className="mb-8 py-5">
       <Flex justify="space-between" align="center">
         <Link href="/" className="text-xl font-sans font-bold text-inherit no-underline flex items-center gap-2">
-          <Image
-            src="/logo.svg"
-            alt={metaData.title}
-            width={24}
-            height={24}
-            className="w-6 h-6"
-            style={{ color: "inherit" }}
-          />
+          {mounted && (
+            <Image
+              src={logoPath}
+              alt={metaData.title}
+              width={24}
+              height={24}
+              className="w-6 h-6"
+            />
+          )}
+          {!mounted && (
+            <div className="w-6 h-6" />
+          )}
           {metaData.title}
         </Link>
         <Flex align="center" gap="middle">
