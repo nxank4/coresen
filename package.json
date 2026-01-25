@@ -6,7 +6,8 @@
     "build": "bun --bun next build",
     "start": "bun --bun next start",
     "lockfile:check": "bun install --frozen-lockfile",
-    "lockfile:update": "bun install"
+    "lockfile:update": "bun install",
+    "update-blog-table": "bun run scripts/generate-blog-table.ts"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^2.0.3",
