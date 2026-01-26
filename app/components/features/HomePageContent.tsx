@@ -4,9 +4,11 @@ import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Typography, Card, Flex, Button, Space, Spin } from "antd";
 import { formatDate } from "app/lib/utils";
+import { useNavigation } from "../ui/NavigationContext";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -41,19 +43,28 @@ export function HomePageContent({ recentBlogs }: HomePageProps) {
   const [cardLoadingSlug, setCardLoadingSlug] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const { setNavigating } = useNavigation();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const handleNavigation = (href: string) => {
+    if (pathname !== href && !pathname.startsWith(href + "/")) {
+      setNavigating(true);
+    }
     setIsPending(true);
     router.push(href);
   };
 
   const handleCardClick = (slug: string) => {
+    const href = `/blog/${slug}`;
+    if (pathname !== href && !pathname.startsWith(href + "/")) {
+      setNavigating(true);
+    }
     setCardLoadingSlug(slug);
-    router.push(`/blog/${slug}`);
+    router.push(href);
   };
 
   if (!mounted) {
@@ -106,11 +117,11 @@ export function HomePageContent({ recentBlogs }: HomePageProps) {
               }}
             >
               Exploring the depths of AI, data science, and machine learning through{" "}
-              <Link href="/blog" className="link-animated text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 font-medium">
+              <Link href="/blog" className="link-animated font-medium">
                 writing
               </Link>{" "}
               and{" "}
-              <Link href="/projects" className="link-animated text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 font-medium">
+              <Link href="/projects" className="link-animated font-medium">
                 projects
               </Link>
               .
