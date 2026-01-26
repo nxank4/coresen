@@ -1,54 +1,36 @@
 "use client";
 
-import React, { useTransition } from "react";
-import { useEffect, useState } from "react";
+import React, { useTransition, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, Flex, Spin } from "antd";
 import { useTheme } from "next-themes";
 import { ThemeSwitch } from "../ui/theme-switch";
+import { useNavigation } from "../ui/NavigationContext";
 import { metaData } from "../../config";
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  const [isPending] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
+  const { setNavigating } = useNavigation();
   const isActive = pathname === href || pathname.startsWith(href + "/");
 
-  useEffect(() => {
-    const updateMenuColors = () => {
-      const isDark = document.documentElement.classList.contains("dark");
-      const selectedLinks = document.querySelectorAll(
-        ".ant-menu-item-selected .ant-menu-title-content a, .ant-menu-title-content a.ant-menu-item-selected"
-      );
-      
-      selectedLinks.forEach((link) => {
-        const element = link as HTMLElement;
-        if (isDark) {
-          element.style.setProperty("color", "rgba(255, 255, 255, 1)", "important");
-        } else {
-          element.style.setProperty("color", "rgba(0, 0, 0, 0.88)", "important");
-        }
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // Only trigger navigation state if navigating to a different page
+    if (pathname !== href && !pathname.startsWith(href + "/")) {
+      setNavigating(true);
+      startTransition(() => {
+        // Navigation will happen automatically via Next.js Link
       });
-    };
-
-    const timer = setTimeout(updateMenuColors, 0);
-    updateMenuColors();
-    
-    const observer = new MutationObserver(() => {
-      setTimeout(updateMenuColors, 0);
-    });
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
-
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, []);
+    }
+  };
 
   return (
     <Link
       href={href}
+      onClick={handleClick}
       className={isActive ? "ant-menu-item-selected nav-link-active" : "nav-link"}
       style={{
         display: "inline-flex",
@@ -72,11 +54,13 @@ const navItems = [
 export function Navbar() {
   const pathname = usePathname();
   const { theme, systemTheme } = useTheme();
+  const { setNavigating } = useNavigation();
   const [mounted, setMounted] = useState(false);
 
   // Find the active key based on the current path
   const activeKey = navItems.find((item) => pathname.startsWith(item.key))?.key;
 
+  // Determine current theme and logo path
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -108,29 +92,28 @@ export function Navbar() {
 
     updateMenuColors();
     const observer = new MutationObserver(updateMenuColors);
-    observer.observe(document.body, { 
-      childList: true, 
-      subtree: true, 
-      attributes: true, 
-      attributeFilter: ["class"] 
-    });
-
-    const themeObserver = new MutationObserver(updateMenuColors);
-    themeObserver.observe(document.documentElement, {
+    observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
     });
 
-    return () => {
-      observer.disconnect();
-      themeObserver.disconnect();
-    };
-  }, [pathname]);
+    return () => observer.disconnect();
+  }, [theme, systemTheme]);
+
+  const handleLogoClick = () => {
+    if (pathname !== "/") {
+      setNavigating(true);
+    }
+  };
 
   return (
     <nav className="mb-8 py-5">
       <Flex justify="space-between" align="center">
-        <Link href="/" className="text-xl font-sans font-bold text-inherit no-underline flex items-center gap-2">
+        <Link 
+          href="/" 
+          onClick={handleLogoClick}
+          className="text-xl font-sans font-bold text-inherit no-underline flex items-center gap-2 hover:text-inherit transition-opacity duration-200 hover:opacity-70"
+        >
           {mounted && (
             <Image
               src={logoPath}

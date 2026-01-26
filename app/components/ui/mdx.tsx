@@ -2,14 +2,15 @@ import React, { Children } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { highlight } from "sugar-high";
 import { TweetComponent } from "../features/tweet";
 import { CaptionComponent } from "./caption";
 import { YouTubeComponent } from "../features/youtube";
+import { CodeCopyButton } from "./CodeCopyButton";
 import { hoverBrightness } from "../../lib/utils/animations";
+import { KatexLoader } from "./KatexLoader";
 import rehypeKatex from "rehype-katex";
+import rehypeHighlight from "rehype-highlight";
 import remarkMath from "remark-math";
-import "katex/dist/katex.min.css";
 
 
 function CustomLink(props) {
@@ -31,7 +32,6 @@ function RoundedImage(props) {
   return <Image alt={props.alt} className="rounded-lg" {...props} />;
 }
 
-// Extract text content from React children
 function extractCodeText(children) {
   if (typeof children === "string") {
     return children;
@@ -57,111 +57,141 @@ function extractCodeText(children) {
     .join("");
 }
 
-// Get language from className (e.g., "language-javascript" -> "javascript")
 function getLanguageFromClassName(className) {
   if (!className) return null;
   const match = className.match(/language-(\w+)/);
   return match ? match[1] : null;
 }
 
-// Format language name for display
 function formatLanguageName(lang) {
-  if (!lang) return "";
   const langMap = {
     js: "JavaScript",
-    jsx: "JSX",
     ts: "TypeScript",
+    jsx: "JSX",
     tsx: "TSX",
     py: "Python",
     rb: "Ruby",
+    go: "Go",
+    rs: "Rust",
     sh: "Shell",
     bash: "Bash",
-    zsh: "Zsh",
     json: "JSON",
     yaml: "YAML",
-    yml: "YAML",
     md: "Markdown",
     html: "HTML",
     css: "CSS",
-    scss: "SCSS",
-    sass: "SASS",
     sql: "SQL",
-    go: "Go",
-    rs: "Rust",
-    php: "PHP",
-    java: "Java",
-    cpp: "C++",
-    c: "C",
-    cs: "C#",
-    swift: "Swift",
-    kt: "Kotlin",
-    scala: "Scala",
-    r: "R",
-    matlab: "MATLAB",
-    jl: "Julia",
   };
-  return langMap[lang.toLowerCase()] || lang.charAt(0).toUpperCase() + lang.slice(1);
+  return langMap[lang?.toLowerCase()] || lang?.toUpperCase() || "Code";
 }
 
 function Code({ children, className, ...props }) {
   const codeText = extractCodeText(children);
   const language = getLanguageFromClassName(className);
   const isCodeBlock = className?.includes("language-");
-  
-  // For code blocks (inside <pre>), highlight the code
-  if (isCodeBlock && codeText) {
-    const codeHTML = highlight(codeText);
-    
+  const isHighlighted = className?.includes("hljs");
+
+  // For code blocks (inside <pre>), return as-is - rehype-highlight or Pre component will handle highlighting
+  if (isCodeBlock) {
+    // If already highlighted by rehype-highlight, just return it
+    if (isHighlighted) {
+      return (
+        <code
+          className={className || ""}
+          {...props}
+          data-language={language || undefined}
+        >
+          {children}
+        </code>
+      );
+    }
+    // Otherwise, return as-is for Pre component to handle
     return (
       <code
-        className={`block ${className || ""}`}
+        className={className || ""}
         {...props}
-        dangerouslySetInnerHTML={{ __html: codeHTML }}
         data-language={language || undefined}
-      />
+      >
+        {children}
+      </code>
     );
   }
-  
-  // For inline code, simple highlight
-  if (codeText && !isCodeBlock) {
-    const codeHTML = highlight(codeText);
-    return (
-      <code
-        className={className}
-        {...props}
-        dangerouslySetInnerHTML={{ __html: codeHTML }}
-      />
-    );
-  }
-  
+
+  // For inline code, return as plain text (rehype-highlight handles code blocks)
   return <code className={className} {...props}>{children}</code>;
 }
 
 function Pre({ children, className, ...props }) {
   // Extract code element and language from children
-  let codeElement = null;
-  let language = null;
+  let codeElement: React.ReactElement | null = null;
+  let language: string | null = null;
+  let codeText = "";
+  let codeClassName = "";
+  let isAlreadyHighlighted = false;
+
+  // Try to find code element in children
+  const childrenArray = Children.toArray(children);
   
-  Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.type === "code") {
-      codeElement = child;
-      const codeClassName = (child.props as { className?: string })?.className || "";
-      language = getLanguageFromClassName(codeClassName);
+  for (const child of childrenArray) {
+    if (React.isValidElement(child)) {
+      // Check if it's a code element directly
+      if (child.type === "code" || (typeof child.type === "string" && child.type === "code")) {
+        codeElement = child;
+        const childProps = child.props as { className?: string; children?: React.ReactNode };
+        codeClassName = childProps?.className || "";
+        language = getLanguageFromClassName(codeClassName);
+        codeText = extractCodeText(childProps.children);
+        
+        // Check if already highlighted by rehype-highlight (has hljs class)
+        if (codeClassName.includes("hljs")) {
+          isAlreadyHighlighted = true;
+        }
+        break;
+      }
     }
-  });
-  
+  }
+
+  // If still no code found, try extracting from all children
+  if (!codeText) {
+    codeText = extractCodeText(children);
+    // Try to find language from any code element in the tree
+    Children.forEach(children, (child) => {
+      if (React.isValidElement(child)) {
+        const childClassName = (child.props as { className?: string })?.className || "";
+        if (childClassName.includes("language-")) {
+          language = getLanguageFromClassName(childClassName);
+          codeClassName = childClassName;
+        }
+        if (childClassName.includes("hljs")) {
+          isAlreadyHighlighted = true;
+        }
+      }
+    });
+  }
+
   const displayLanguage = language ? formatLanguageName(language) : null;
-  const preClassName = `bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-800 py-4 px-4 text-sm font-mono ${className || ""}`;
-  
+  const preClassName = `bg-neutral-100 dark:bg-neutral-800/50 rounded-md overflow-x-auto py-3 px-4 text-sm font-mono ${className || ""}`;
+
   return (
-    <div className="relative my-6 group">
-      {displayLanguage && (
-        <div className="absolute top-0 right-0 px-3 py-1 text-xs font-medium text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800 border-b border-l border-neutral-200 dark:border-neutral-700 rounded-bl-lg rounded-tr-lg z-10">
-          {displayLanguage}
+    <div className="my-6 group">
+      {/* Header with language label and copy button - outside pre */}
+      {(displayLanguage || codeText) && (
+        <div className="flex justify-between items-center px-4 py-2 bg-neutral-100 dark:bg-neutral-800/50 rounded-t-md border-b border-neutral-200 dark:border-neutral-700">
+          {displayLanguage && (
+            <div className="px-2 py-0.5 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+              {displayLanguage}
+            </div>
+          )}
+          {codeText && (
+            <div>
+              <CodeCopyButton code={codeText} />
+            </div>
+          )}
         </div>
       )}
+      {/* Code block */}
       <pre
-        className={preClassName}
+        className={`${preClassName} ${(displayLanguage || codeText) ? "rounded-t-none" : ""} ${isAlreadyHighlighted ? "hljs" : ""}`}
         {...props}
       >
         {children}
@@ -279,16 +309,16 @@ function createHeading(level) {
     const animationClasses = hoverBrightness.classes;
     
     const headingClasses = {
-      1: `${baseTextColor} text-4xl md:text-5xl font-bold mt-8 mb-4 inline-block ${animationClasses}`,
-      2: `${baseTextColor} text-[30px] md:text-4xl font-semibold mt-8 mb-4 inline-block ${animationClasses}`,
-      3: `${baseTextColor} text-[25px] font-semibold mt-6 mb-3 inline-block ${animationClasses}`,
-      4: `${baseTextColor} text-xl font-semibold mt-6 mb-3 inline-block ${animationClasses}`,
-      5: `${baseTextColor} text-lg font-semibold mt-4 mb-2 inline-block ${animationClasses}`,
-      6: `${baseTextColor} text-base font-semibold mt-4 mb-2 inline-block ${animationClasses}`,
+      1: `${baseTextColor} text-4xl md:text-5xl font-bold mt-8 mb-4 block ${animationClasses}`,
+      2: `${baseTextColor} text-[30px] md:text-4xl font-semibold mt-8 mb-4 block ${animationClasses}`,
+      3: `${baseTextColor} text-[25px] font-semibold mt-6 mb-3 block ${animationClasses}`,
+      4: `${baseTextColor} text-xl font-semibold mt-6 mb-3 block ${animationClasses}`,
+      5: `${baseTextColor} text-lg font-semibold mt-4 mb-2 block ${animationClasses}`,
+      6: `${baseTextColor} text-base font-semibold mt-4 mb-2 block ${animationClasses}`,
     };
     return React.createElement(
       `h${level}`,
-      { id: slug, className: headingClasses[level] || `${baseTextColor} inline-block ${animationClasses}` },
+      { id: slug, className: headingClasses[level] || `${baseTextColor} block ${animationClasses}` },
       [
         children,
         React.createElement("a", {
@@ -326,15 +356,18 @@ let components = {
 
 export function CustomMDX(props) {
   return (
-    <MDXRemote
-      {...props}
-      components={{ ...components, ...(props.components || {}) }}
-      options={{
-        mdxOptions: {
-          remarkPlugins: [remarkMath],
-          rehypePlugins: [rehypeKatex],
-        },
-      }}
-    />
+    <>
+      <KatexLoader source={typeof props.source === "string" ? props.source : undefined} />
+      <MDXRemote
+        {...props}
+        components={{ ...components, ...(props.components || {}) }}
+        options={{
+          mdxOptions: {
+            remarkPlugins: [remarkMath],
+            rehypePlugins: [rehypeHighlight, rehypeKatex],
+          },
+        }}
+      />
+    </>
   );
 }
