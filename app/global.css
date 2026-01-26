@@ -13,33 +13,40 @@
 }
 
 :root {
-  --sh-class: #525252;
-  --sh-identifier: #262626;
-  --sh-sign: #737373;
-  --sh-string: #404040;
-  --sh-keyword: #171717;
-  --sh-comment: #a3a3a3;
-  --sh-jsxliterals: #525252;
-  --sh-property: #404040;
-  --sh-entity: #404040;
+  --sh-class: #7c3aed; /* Purple for classes */
+  --sh-identifier: #1e40af; /* Blue for identifiers */
+  --sh-sign: #6b7280; /* Gray for signs */
+  --sh-string: #059669; /* Green for strings */
+  --sh-keyword: #dc2626; /* Red for keywords */
+  --sh-comment: #6b7280; /* Gray for comments */
+  --sh-jsxliterals: #7c3aed; /* Purple for JSX */
+  --sh-property: #1e40af; /* Blue for properties */
+  --sh-entity: #1e40af; /* Blue for entities */
+  --sh-number: #ea580c; /* Orange for numbers */
+  --sh-function: #7c3aed; /* Purple for functions */
+  --sh-operator: #6b7280; /* Gray for operators */
 }
 
 .dark {
-  --sh-class: #d4d4d4;
-  --sh-identifier: #ffffff;
-  --sh-sign: #a3a3a3;
-  --sh-string: #e5e5e5;
-  --sh-keyword: #fafafa;
-  --sh-comment: #737373;
-  --sh-jsxliterals: #d4d4d4;
-  --sh-property: #e5e5e5;
-  --sh-entity: #e5e5e5;
+  --sh-class: #a78bfa; /* Light purple for classes */
+  --sh-identifier: #60a5fa; /* Light blue for identifiers */
+  --sh-sign: #9ca3af; /* Light gray for signs */
+  --sh-string: #34d399; /* Light green for strings */
+  --sh-keyword: #f87171; /* Light red for keywords */
+  --sh-comment: #9ca3af; /* Light gray for comments */
+  --sh-jsxliterals: #a78bfa; /* Light purple for JSX */
+  --sh-property: #60a5fa; /* Light blue for properties */
+  --sh-entity: #60a5fa; /* Light blue for entities */
+  --sh-number: #fb923c; /* Light orange for numbers */
+  --sh-function: #a78bfa; /* Light purple for functions */
+  --sh-operator: #9ca3af; /* Light gray for operators */
 }
 
 html {
   min-width: 360px;
   background-color: #ffffff;
   color: #000000;
+  transition: background-color 0.75s ease, color 0.75s ease;
 }
 
 html.dark {
@@ -51,6 +58,69 @@ body {
   background-color: inherit;
   color: inherit;
   font-family: var(--font-inter), system-ui, sans-serif;
+  transition: background-color 0.75s ease, color 0.75s ease;
+}
+
+/* Smooth theme transitions for color-related properties */
+*,
+*::before,
+*::after {
+  transition-property: background-color, color, border-color, fill, stroke, box-shadow;
+  transition-duration: 0.75s;
+  transition-timing-function: ease;
+}
+
+/* Preserve existing transitions for interactive elements */
+button,
+.ant-btn,
+a,
+input,
+textarea,
+select {
+  transition: background-color 0.75s ease, color 0.75s ease, border-color 0.75s ease, opacity 0.2s ease, transform 0.2s ease, box-shadow 0.75s ease;
+}
+
+/* Exclude canvas and images from color transitions */
+canvas,
+img,
+video,
+iframe {
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+/* Exclude code blocks from color transitions to preserve syntax highlighting */
+.prose pre,
+.prose pre code,
+.prose pre code *,
+.prose pre code .hljs,
+.prose pre code .hljs *,
+.prose pre code .sh__token--keyword,
+.prose pre code .sh__token--string,
+.prose pre code .sh__token--comment,
+.prose pre code .sh__token--class,
+.prose pre code .sh__token--identifier,
+.prose pre code .sh__token--number,
+.prose pre code .sh__token--function,
+.prose pre code .sh__token--operator {
+  transition: none !important;
+}
+
+/* Override browser default link colors for logo link */
+nav a[href="/"] {
+  color: inherit !important;
+  display: inline-flex !important;
+  transition: opacity 0.2s ease !important;
+}
+
+nav a[href="/"]:hover,
+nav a[href="/"]:focus {
+  color: inherit !important;
+  opacity: 0.7 !important;
+}
+
+nav a[href="/"]:active,
+nav a[href="/"]:visited {
+  color: inherit !important;
 }
 
 h1, h2 {
@@ -134,11 +204,19 @@ code, pre, .prose code, .prose pre {
 .ant-menu-item a,
 .ant-menu-item .ant-menu-title-content a,
 .nav-link {
-  color: inherit !important;
+  color: rgba(0, 0, 0, 0.88) !important;
   position: relative !important;
   text-decoration: none !important;
   display: inline-flex !important;
   align-items: center !important;
+  transition: color 0.3s ease !important;
+}
+
+.dark .ant-menu-item a,
+.dark .ant-menu-item .ant-menu-title-content a,
+.dark .nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: color 0.3s ease !important;
 }
 
 .ant-menu-item a::after,
@@ -197,11 +275,13 @@ li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content .nav-link-active
 li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a,
 li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.ant-menu-item-selected {
   color: rgba(0, 0, 0, 0.88) !important;
+  transition: color 0.3s ease !important;
 }
 
 .dark .ant-menu-item,
 .dark .ant-menu-item a {
   color: rgba(255, 255, 255, 0.85) !important;
+  transition: color 0.3s ease !important;
 }
 
 .dark .ant-menu-item-active,
@@ -210,6 +290,7 @@ li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.ant-menu-item-
 .dark .ant-menu-item-selected a,
 .dark a.ant-menu-item-selected {
   color: rgba(255, 255, 255, 1) !important;
+  transition: color 0.3s ease !important;
 }
 
 .dark .ant-menu-light .ant-menu-item-selected,
@@ -232,6 +313,7 @@ li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.ant-menu-item-
 .dark li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a,
 .dark li.ant-menu-item.ant-menu-item-selected .ant-menu-title-content a.ant-menu-item-selected {
   color: rgba(255, 255, 255, 1) !important;
+  transition: color 0.3s ease !important;
 }
 
 .ant-card,
@@ -250,38 +332,48 @@ button {
   background-color: #000000 !important;
   border-color: #000000 !important;
   color: #ffffff !important;
+  transition: all 0.2s ease !important;
 }
 
 .ant-btn-primary:hover:not(:disabled),
 .ant-btn-primary:focus:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.8) !important;
-  border-color: rgba(0, 0, 0, 0.8) !important;
+  background-color: #1a1a1a !important;
+  border-color: #1a1a1a !important;
   color: #ffffff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 .ant-btn-primary:active:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  border-color: rgba(0, 0, 0, 0.7) !important;
+  background-color: #000000 !important;
+  border-color: #000000 !important;
   color: #ffffff !important;
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
 .dark .ant-btn-primary {
   background-color: #ffffff !important;
   border-color: #ffffff !important;
   color: #000000 !important;
+  transition: all 0.2s ease !important;
 }
 
 .dark .ant-btn-primary:hover:not(:disabled),
 .dark .ant-btn-primary:focus:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  border-color: rgba(255, 255, 255, 0.9) !important;
+  background-color: #f0f0f0 !important;
+  border-color: #f0f0f0 !important;
   color: #000000 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
 }
 
 .dark .ant-btn-primary:active:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  border-color: rgba(255, 255, 255, 0.8) !important;
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
   color: #000000 !important;
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.15) !important;
 }
 
 .ant-btn-default {
@@ -438,7 +530,61 @@ button {
 }
 
 .prose pre {
-  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-4;
+  @apply bg-neutral-100 dark:bg-neutral-800/50 rounded-md overflow-x-auto py-3 px-4;
+  border: none;
+  box-shadow: none;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Override highlight.js styles to match our theme */
+.prose pre.hljs,
+.prose pre code.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.prose pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0;
+  background: transparent;
+}
+
+/* Highlight.js token colors - override to match our theme */
+.prose pre code.hljs .hljs-keyword {
+  color: var(--sh-keyword) !important;
+}
+
+.prose pre code.hljs .hljs-string {
+  color: var(--sh-string) !important;
+}
+
+.prose pre code.hljs .hljs-comment {
+  color: var(--sh-comment) !important;
+  font-style: italic;
+}
+
+.prose pre code.hljs .hljs-title,
+.prose pre code.hljs .hljs-class {
+  color: var(--sh-class) !important;
+}
+
+.prose pre code.hljs .hljs-variable,
+.prose pre code.hljs .hljs-attr {
+  color: var(--sh-identifier) !important;
+}
+
+.prose pre code.hljs .hljs-number {
+  color: var(--sh-number) !important;
+}
+
+.prose pre code.hljs .hljs-function {
+  color: var(--sh-function) !important;
+}
+
+.prose pre code.hljs .hljs-operator {
+  color: var(--sh-operator) !important;
 }
 
 .prose code {
@@ -447,10 +593,96 @@ button {
 
 .prose pre code {
   @apply p-0;
-  border: initial;
-  line-height: 1.5;
+  border: none;
+  line-height: 1.6;
   background-color: transparent;
   font-weight: 400;
+  /* Don't use color: inherit - it overrides syntax highlighting colors */
+  color: #262626; /* Default text color for unhighlighted code */
+  font-size: 0.875rem;
+  display: block;
+  white-space: pre;
+}
+
+.dark .prose pre code {
+  color: #e5e5e5; /* Default text color for dark mode */
+}
+
+/* Syntax highlighting styles for sugar-high */
+.prose pre code .sh__token--keyword,
+.prose pre code .sh__token--keyword * {
+  color: var(--sh-keyword) !important;
+  font-weight: 500;
+}
+
+.prose pre code .sh__token--string,
+.prose pre code .sh__token--string * {
+  color: var(--sh-string) !important;
+}
+
+.prose pre code .sh__token--comment,
+.prose pre code .sh__token--comment * {
+  color: var(--sh-comment) !important;
+  font-style: italic;
+}
+
+.prose pre code .sh__token--class,
+.prose pre code .sh__token--class * {
+  color: var(--sh-class) !important;
+}
+
+.prose pre code .sh__token--identifier,
+.prose pre code .sh__token--identifier * {
+  color: var(--sh-identifier) !important;
+}
+
+.prose pre code .sh__token--sign,
+.prose pre code .sh__token--sign * {
+  color: var(--sh-sign) !important;
+}
+
+.prose pre code .sh__token--property,
+.prose pre code .sh__token--property * {
+  color: var(--sh-property) !important;
+}
+
+.prose pre code .sh__token--entity,
+.prose pre code .sh__token--entity * {
+  color: var(--sh-entity) !important;
+}
+
+.prose pre code .sh__token--jsxliterals,
+.prose pre code .sh__token--jsxliterals * {
+  color: var(--sh-jsxliterals) !important;
+}
+
+.prose pre code .sh__token--number,
+.prose pre code .sh__token--number * {
+  color: var(--sh-number) !important;
+}
+
+.prose pre code .sh__token--function,
+.prose pre code .sh__token--function * {
+  color: var(--sh-function) !important;
+}
+
+.prose pre code .sh__token--operator,
+.prose pre code .sh__token--operator * {
+  color: var(--sh-operator) !important;
+}
+
+/* Inline code syntax highlighting */
+.prose code:not(pre code) .sh__token--keyword {
+  color: var(--sh-keyword);
+}
+
+.prose code:not(pre code) .sh__token--string {
+  color: var(--sh-string);
+}
+
+.prose code:not(pre code) .sh__token--comment {
+  color: var(--sh-comment);
+  font-style: italic;
 }
 
 .prose img {
@@ -498,7 +730,14 @@ button {
   @apply text-neutral-600 dark:text-neutral-400;
   position: relative;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: background-color 0.2s ease;
+  background-color: rgba(0, 0, 0, 0.06);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.dark .prose a:not(.anchor) {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .prose a:not(.anchor)::after {
@@ -514,7 +753,12 @@ button {
 }
 
 .prose a:not(.anchor):hover {
-  @apply text-neutral-800 dark:text-neutral-200;
+  @apply text-neutral-600 dark:text-neutral-400;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark .prose a:not(.anchor):hover {
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 .prose a:not(.anchor):hover::after {
@@ -535,7 +779,29 @@ button {
 .underline-animated {
   position: relative;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: rgba(0, 0, 0, 0.06);
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: rgb(82, 82, 82) !important; /* text-neutral-600 for light theme */
+}
+
+.dark .link-animated,
+.dark .underline-animated {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgb(163, 163, 163) !important; /* text-neutral-400 for dark theme */
+}
+
+.link-animated:hover,
+.underline-animated:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: rgb(38, 38, 38) !important; /* text-neutral-800 for light theme hover */
+}
+
+.dark .link-animated:hover,
+.dark .underline-animated:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: rgb(229, 229, 229) !important; /* text-neutral-200 for dark theme hover */
 }
 
 .link-animated::after,
@@ -556,6 +822,68 @@ button {
 .underline-animated:hover::after {
   width: 100%;
   opacity: 1;
+}
+
+/* Content Card Description Truncation */
+.content-card-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  position: relative;
+  max-height: 3em; /* 2 lines * 1.5 line-height */
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+/* Responsive: Show more lines on larger screens */
+@media (min-width: 768px) {
+  .content-card-description {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    max-height: 4.5em; /* 3 lines * 1.5 line-height */
+  }
+}
+
+@media (min-width: 1024px) {
+  .content-card-description {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    max-height: 4.5em; /* 3 lines * 1.5 line-height */
+  }
+}
+
+/* Read More Link */
+.content-card-read-more {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 10;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.dark .content-card-read-more {
+  background: rgba(20, 20, 20, 0.95);
+}
+
+/* Ensure cards have equal heights in grid */
+.grid.items-stretch > * {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid.items-stretch > * > * {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Card with offset shadow animation */

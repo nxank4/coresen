@@ -1,21 +1,38 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useNavigation } from "./NavigationContext";
 
 function NavigationLoadingBar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { isNavigating, setNavigating } = useNavigation();
   const [loading, setLoading] = useState(false);
+  const prevPathnameRef = useRef<string | null>(null);
 
+  // Show loading when navigation starts
   useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
+    if (isNavigating) {
+      setLoading(true);
+    }
+  }, [isNavigating]);
 
-    return () => clearTimeout(timer);
-  }, [pathname, searchParams]);
+  // Hide loading when pathname changes (navigation completes)
+  useEffect(() => {
+    if (prevPathnameRef.current !== null && prevPathnameRef.current !== pathname) {
+      // Navigation completed, hide loading after a short delay
+      const timer = setTimeout(() => {
+        setLoading(false);
+        setNavigating(false);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+    
+    // Update ref
+    prevPathnameRef.current = pathname;
+  }, [pathname, searchParams, setNavigating]);
 
   if (!loading) return null;
 

@@ -11,6 +11,9 @@ import { ThemeProvider } from "./components/ui/theme-switch";
 import AntdRegistry from "./lib/AntdRegistry";
 import { AntdConfigProvider } from "./components/ui/AntdConfigProvider";
 import { NavigationLoading } from "./components/ui/NavigationLoading";
+import { NavigationProvider } from "./components/ui/NavigationContext";
+import { WebVitals } from "./components/ui/WebVitals";
+import { PerformanceMonitor } from "./components/ui/PerformanceMonitor";
 import { metaData } from "./config";
 
 export const metadata: Metadata = {
@@ -109,14 +112,18 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <AntdConfigProvider>
-              <NavigationLoading />
-              <main className="flex-auto min-w-0 mt-2 md:mt-6 flex flex-col px-4 sm:px-6 md:px-8 lg:px-12 w-full max-w-screen-sm sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl xl:max-w-7xl mx-auto">
-                <Navbar />
-                {children}
-                <Footer />
-                <Analytics />
-                <SpeedInsights />
-              </main>
+              <NavigationProvider>
+                <NavigationLoading />
+                <main className="flex-auto min-w-0 mt-2 md:mt-6 flex flex-col px-4 sm:px-6 md:px-8 lg:px-12 w-full max-w-screen-sm sm:max-w-screen-md md:max-w-screen-lg lg:max-w-screen-xl xl:max-w-7xl mx-auto">
+                  <Navbar />
+                  {children}
+                  <Footer />
+                  <Analytics />
+                  <SpeedInsights />
+                  <WebVitals />
+                  <PerformanceMonitor />
+                </main>
+              </NavigationProvider>
             </AntdConfigProvider>
           </ThemeProvider>
         </AntdRegistry>
