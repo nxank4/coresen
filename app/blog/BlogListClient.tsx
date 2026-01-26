@@ -1,18 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMemo, useRef, useState, useTransition } from "react";
-import { Flex, Typography, Segmented, Card } from "antd";
-
-const { Text } = Typography;
+import { Segmented } from "antd";
+import { LayoutGrid, List } from "lucide-react";
+import { ContentCard } from "../components/ui/ContentCard";
 
 interface BlogPost {
   slug: string;
   metadata: {
     title: string;
     publishedAt: string;
+    summary?: string;
     image?: string;
   };
 }
@@ -73,8 +72,8 @@ export function BlogListClient({ posts }: BlogListClientProps) {
 
   const containerClassName = useMemo(() => {
     return view === "grid"
-      ? "grid gap-6 md:grid-cols-2 w-full"
-      : "grid gap-4 grid-cols-1 w-full";
+      ? "grid gap-6 md:grid-cols-2 w-full items-stretch"
+      : "grid gap-4 grid-cols-1 w-full items-stretch";
   }, [view]);
 
   const handleViewChange = (nextView: "grid" | "list") => {
@@ -99,8 +98,8 @@ export function BlogListClient({ posts }: BlogListClientProps) {
           value={view}
           onChange={(val) => handleViewChange(val)}
           options={[
-            { label: "Grid", value: "grid" },
-            { label: "List", value: "list" },
+            { label: <LayoutGrid size={16} />, value: "grid" },
+            { label: <List size={16} />, value: "list" },
           ]}
         />
       </div>
@@ -110,72 +109,20 @@ export function BlogListClient({ posts }: BlogListClientProps) {
           isSwitchingView ? "opacity-0 translate-y-1" : "opacity-100 translate-y-0"
         }`}
       >
-        {posts.map((post) => {
-          const thumbClassName = "w-32 h-32";
-
-          return (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              onClick={(e) => handleClick(`/blog/${post.slug}`, e)}
-              style={{ textDecoration: "none" }}
-              aria-busy={isPending}
-            >
-              <Card
-                hoverable
-                size="small"
-                style={{ width: "100%", cursor: "pointer", backgroundColor: "transparent", minHeight: "120px" }}
-                className="card-shadow-offset"
-              >
-                <div className="flex gap-4 items-center h-full">
-                  <div
-                    className={`relative ${thumbClassName} rounded-lg overflow-hidden bg-neutral-200 dark:bg-neutral-800 flex-shrink-0 flex items-center justify-center`}
-                    aria-hidden="true"
-                  >
-                    {post.metadata.image ? (
-                      <Image
-                        src={post.metadata.image}
-                        alt={post.metadata.title}
-                        fill
-                        sizes="(min-width: 1024px) 128px, 33vw"
-                        className="object-cover transition-transform duration-200 group-hover:scale-105"
-                      />
-                    ) : (
-                      <span className="text-neutral-700 dark:text-neutral-200 font-semibold text-lg">
-                        {post.metadata.title
-                          .split(/\s+/)
-                          .filter(Boolean)
-                          .slice(0, 2)
-                          .map((w) => w[0]?.toUpperCase())
-                          .join("") || "BL"}
-                      </span>
-                    )}
-                  </div>
-                  <Flex
-                    vertical
-                    justify="space-between"
-                    style={{ width: "100%", minHeight: "96px" }}
-                  >
-                    <Text
-                      strong
-                      className="text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-950 dark:group-hover:text-neutral-50 transition-colors"
-                      style={{ fontSize: 16, lineHeight: 1.4 }}
-                    >
-                      {post.metadata.title}
-                    </Text>
-                    <Text
-                      type="secondary"
-                      className="text-neutral-600 dark:text-neutral-400"
-                      style={{ fontSize: 14 }}
-                    >
-                      {formatDate(post.metadata.publishedAt, false)}
-                    </Text>
-                  </Flex>
-                </div>
-              </Card>
-            </Link>
-          );
-        })}
+        {posts.map((post) => (
+          <ContentCard
+            key={post.slug}
+            title={post.metadata.title}
+            description={post.metadata.summary}
+            date={formatDate(post.metadata.publishedAt, false)}
+            href={`/blog/${post.slug}`}
+            image={post.metadata.image}
+            onClick={(e) => {
+              e.preventDefault();
+              handleClick(`/blog/${post.slug}`, e);
+            }}
+          />
+        ))}
       </div>
     </div>
   );
