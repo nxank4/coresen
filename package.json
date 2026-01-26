@@ -1,6 +1,7 @@
 {
   "private": true,
   "license": "MIT",
+  "_comment": "Trigger Vercel build with fixed global.css",
   "scripts": {
     "dev": "bun --bun next dev",
     "build": "bun --bun next build",
