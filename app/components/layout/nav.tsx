@@ -65,9 +65,40 @@ export function Navbar() {
     setMounted(true);
   }, []);
 
+  // Determine current theme (considering system theme)
+  // Default to light mode if theme is not yet determined
   const currentTheme = theme === "system" ? (systemTheme || "light") : (theme || "light");
   const isDark = currentTheme === "dark";
+  
+  // Get logo path based on theme
   const logoPath = isDark ? "/logo-dark.svg" : "/logo-light.svg";
+
+  useEffect(() => {
+    const updateMenuColors = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      const selectedLinks = document.querySelectorAll(
+        ".ant-menu-item-selected .ant-menu-title-content a, .ant-menu-title-content a.ant-menu-item-selected"
+      );
+      
+      selectedLinks.forEach((link) => {
+        const element = link as HTMLElement;
+        if (isDark) {
+          element.style.setProperty("color", "rgba(255, 255, 255, 1)", "important");
+        } else {
+          element.style.setProperty("color", "rgba(0, 0, 0, 0.88)", "important");
+        }
+      });
+    };
+
+    updateMenuColors();
+    const observer = new MutationObserver(updateMenuColors);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, [theme, systemTheme]);
 
   const handleLogoClick = () => {
     if (pathname !== "/") {
